@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "6ae3f10d-8608-4782-bb41-d7a447560ee9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "user_icon_woman1": {
+      "ver": "1.0.3",
+      "uuid": "511b27ce-0dbe-458e-86cc-c731a8b382ee",
+      "rawTextureUuid": "6ae3f10d-8608-4782-bb41-d7a447560ee9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -3.5,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 154,
+      "height": 149,
+      "rawWidth": 161,
+      "rawHeight": 149,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

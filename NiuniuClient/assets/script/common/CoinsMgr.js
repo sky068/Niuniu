@@ -5,7 +5,6 @@
 "use strict";
 
 let DataMgr = require("./DataMgr");
-// let AlertView = require("./../views/AlertViewCtrl");
 let ViewMgr = require("./ViewMgr");
 
 let CoinsMgr = cc.Class({

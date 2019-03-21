@@ -13,49 +13,96 @@ cc.Class({
 
     properties: {
         avatar: cc.Sprite,
-        nickName: cc.Label,
+        nickNameLabel: cc.Label,
+        nickName: {
+            default:"Mark",
+            notify(){
+                this.nickNameLabel.string = this.nickName;
+            }
+        },
         coinsLabel: cc.Label,
-        _coins: 999999,
+        coins: {
+            default: 999999,
+            type: cc.Integer,
+            min: 0,
+            notify(){
+                this.coinsLabel.string = this.coins;
+            }
+        },
         cardPanelLeft: cc.Node,
         cardPanelRight: cc.Node,
         cardPanelNode: cc.Node,
         menuNode: cc.Node,
-        _cards: [],
+
+        bankerSp: cc.Node,
+        isBanker: {
+            default: false,
+            notify(){
+                this.bankerSp.active = this.isBanker;
+            }
+        },
+
+        betLabel: cc.Label,
+        curBets: 0,         // 当前下注
+
+        hands: [],
+
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.clearHands();
+    },
 
     start () {
 
     },
 
     initPlayer(name, avatar, coins){
-        this.nickName.string = name;
-        this.coinsLabel.string = this._coins = coins;
+        this.nickName = name;
+        this.coins = coins;
     },
 
     onBtnDown(send, data){
-        cc.log("data:" + data);
         let downNum = 0;
         switch (data){
-            case 1:{
+            case "1":{
                 downNum = 10;
                 break;
             }
-            case 2:{
+            case "2":{
                 downNum = 20;
                 break;
             }
-            case 3:{
+            case "3":{
                 downNum = 50;
                 break;
             }
             default:
                 break;
         }
+
+        this.payBet(downNum);
     },
+
+    // 清空手牌
+    clearHands(){
+        this.cardPanelLeft.removeAllChildren();
+        this.cardPanelLeft.width = 0;
+        this.cardPanelRight.removeAllChildren();
+        this.cardPanelRight.width = 0;
+        this.hands = [];
+    },
+
+    // 下注
+    payBet(bet){
+        this.curBets = bet;
+        this.betLabel.string = "下注:" + bet;
+        this.betLabel.node.runAction(cc.blink(0.3,2));
+        this.menuNode.active = false;
+    }
+
 
     // update (dt) {},
 });

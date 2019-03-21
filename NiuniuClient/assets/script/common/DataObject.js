@@ -48,7 +48,8 @@ let PlayerObject = cc.Class({
         fbicon: "",
         fbname: "",
         fb_cache_key: "",           // facebook icon cache key
-        coins: 0,                   // 初始金币
+        coins: 100000,                   // 初始金币
+        nickname: "",
     },
 
     ctor(){

@@ -6,7 +6,7 @@
 
 let DataMgr = require("./../common/DataMgr");
 let ViewBase = require("./../common/ViewBase");
-let AlertView = require("./../views/AlertViewCtrl");
+let AlertView = require("./../views/DialogCtrl");
 let FacebookMgr = require("./../common/FacebookMgr");
 let ServerProxy = require("./../net/HttpProxy");
 let Switch = require("./../common/SwitchControl");

@@ -43,14 +43,18 @@ function TypeReturn(type, card, ncards, pcards) {
 
 /**
  * 创建一副牌，牌面A-K
+ * 默认已经洗牌
  * @return {Array}
  */
-function create1pairPoker() {
+function create1pairPoker(isShuffle) {
     let cards = [];
     for (let i=1; i<=13; i++){
         for (let j=1; j<=4; j++){
             cards.push(new CardObj(i, j));
         }
+    }
+    if (isShuffle){
+        cards = shuffle(cards);
     }
     return cards;
 }

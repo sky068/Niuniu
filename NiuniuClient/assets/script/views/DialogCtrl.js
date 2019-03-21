@@ -7,13 +7,12 @@
 let ViewBase = require("./../common/ViewBase");
 let ViewMgr = require("./../common/ViewMgr");
 
-let AlertViewCtrl = cc.Class({
+let DialogCtrl = cc.Class({
     extends: ViewBase,
 
     properties: {
         btnLeft: cc.Node,
         btnRight: cc.Node,
-        title: cc.Label,
         content: cc.Label,
 
         leftCall: null,
@@ -24,8 +23,7 @@ let AlertViewCtrl = cc.Class({
 
     },
 
-    initView(title, content, lBtnTitle, rBtnTitle, lBtnCall, rBtnCall){
-        this.title.string = title;
+    initView(content, lBtnTitle, rBtnTitle, lBtnCall, rBtnCall){
         this.content.string = content;
         if (lBtnTitle){
             this.btnLeft.getChildByName("title").getComponent(cc.Label).string = lBtnTitle;
@@ -75,38 +73,35 @@ let AlertViewCtrl = cc.Class({
 
 /**
  * 提示框
- * @param title{String} 标题
  * @param content{String} 内容
  * @param leftBtnTitle{String} 左侧按钮文字
  * @param rightBtnTitle{String} 右侧按钮文字
  * @param leftBtnCall{Function} 左侧按钮回调
  * @param rightBtnCall{Function} 右侧按钮回调
  */
-AlertViewCtrl.show = function (title, content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall) {
+DialogCtrl.show = function (content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall) {
     let alert = cc.instantiate(Global.assetMgr.alertPrefab);
-    alert.getComponent("AlertViewCtrl").initView(title, content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall);
+    alert.getComponent("DialogCtrl").initView(content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall);
     ViewMgr.getInstance().pushViewImmediate(alert);
 };
 
 /**
  * 一个绿色按钮提示
- * @param title{String} 标题
  * @param content{String} 内容
  * @param btnTitle{String} 按钮文字
  * @param btnCall{Function} 按钮回调
  */
-AlertViewCtrl.showGreen = function (title, content, btnTitle, btnCall) {
-    AlertViewCtrl.show(title, content, null, btnTitle, null, btnCall);
+DialogCtrl.showGreen = function (content, btnTitle, btnCall) {
+    DialogCtrl.show(content, null, btnTitle, null, btnCall);
 };
 
 /**
  * 一个红色按钮提示
- * @param title{String} 标题
  * @param content{String} 内容
  * @param btnTitle{String} 按钮文字
  * @param btnCall{Function} 按钮回调
  */
-AlertViewCtrl.showRed = function (title, content, btnTitle, btnCall) {
-    AlertViewCtrl.show(title, content, btnTitle, null, btnCall, null);
+DialogCtrl.showRed = function (content, btnTitle, btnCall) {
+    DialogCtrl.show(content, btnTitle, null, btnCall, null);
 };
 
