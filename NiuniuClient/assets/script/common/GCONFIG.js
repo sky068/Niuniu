@@ -9,7 +9,7 @@ let GCONFIG = GCONFIG || {};
 
 GCONFIG.DEBUG_MODE = false; // 是否debug模式
 
-GCONFIG.GUN_COUNTS = 5;
+GCONFIG.roomMulti = 1;
 
 //------------key start------------
 GCONFIG.KEY_SETTING = "KEY_SETTING";

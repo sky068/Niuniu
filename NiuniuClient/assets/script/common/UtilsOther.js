@@ -4,7 +4,7 @@
 
 "use strict";
 
-let Md5 = require("./encrypt/Md5");
+let Md5 = require("./../encrypt/Md5");
 let CSVParser = require("./CSVParser");
 
 let UtilsOther = UtilsOther || {};

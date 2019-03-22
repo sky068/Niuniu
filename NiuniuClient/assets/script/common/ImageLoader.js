@@ -31,7 +31,7 @@ function loadImage(url, callback){
     let dirpath = jsb.fileUtils.getWritablePath() + "TclGameImg/";
     cc.log("dirpath: " + dirpath);
 
-    let md5 = require("./encrypt/Md5");
+    let md5 = require("./../encrypt/Md5");
     let md5Url = md5.md5_hex(url);
     let filePath = dirpath + md5Url + '.jpg';
     cc.log("filepath: " + filePath);

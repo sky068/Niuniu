@@ -65,13 +65,15 @@ cc.Class({
     /**
      * 
      * @param {Number} point 牌面点数（1-13）A-K
-     * @param {Number} suit  牌面花色（1-4）方块、梅花、红桃、黑桃
+     * @param {Number} suit  牌面花色（1-4）方块、梅花、红桃、黑桃'
+     * @param {Boolean} showF 显示正面
      */
-    initCard(point, suit){
+    initCard(point, suit, showF){
         cc.assert(point >= 1 && point <= 13, "point must be [1,13]");
         cc.assert(suit >= 1 && suit <= 4, "suit must be [1,4");
         this.cardPointSp.spriteFrame = this.cardPointSp2.spriteFrame = this.cardAtlas.getSpriteFrame(this._getPointSpriteFrameName(point,suit));
         this.cardSuitSp.spriteFrame = this.cardAtlas.getSpriteFrame(this._getSuitSpriteFrameName(point, suit));
+        this.showFace = showF != undefined ? showF : false;
     },
 
     _updateCard(){

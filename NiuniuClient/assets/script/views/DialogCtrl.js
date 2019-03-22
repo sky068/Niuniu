@@ -26,13 +26,13 @@ let DialogCtrl = cc.Class({
     initView(content, lBtnTitle, rBtnTitle, lBtnCall, rBtnCall){
         this.content.string = content;
         if (lBtnTitle){
-            this.btnLeft.getChildByName("title").getComponent(cc.Label).string = lBtnTitle;
+            this.btnLeft.getChildByName("Label").getComponent(cc.Label).string = lBtnTitle;
         } else {
             this.btnLeft.active = false;
         }
 
         if (rBtnTitle){
-            this.btnRight.getChildByName("title").getComponent(cc.Label).string = rBtnTitle;
+            this.btnRight.getChildByName("Label").getComponent(cc.Label).string = rBtnTitle;
         } else {
             this.btnRight.active = false;
         }
@@ -52,8 +52,6 @@ let DialogCtrl = cc.Class({
         if (this.leftCall){
             this.leftCall();
         }
-
-        Global.audioMgr.playEffect(Global.audioMgr.effBtnClick);
     },
 
     onBtnRight(){
@@ -62,7 +60,6 @@ let DialogCtrl = cc.Class({
         if (this.rightCall){
             this.rightCall();
         }
-        Global.audioMgr.playEffect(Global.audioMgr.effBtnClick);
     },
 
     _rmSelf(){
@@ -80,7 +77,7 @@ let DialogCtrl = cc.Class({
  * @param rightBtnCall{Function} 右侧按钮回调
  */
 DialogCtrl.show = function (content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall) {
-    let alert = cc.instantiate(Global.assetMgr.alertPrefab);
+    let alert = cc.instantiate(Global.assetMgr.dialogPrefab);
     alert.getComponent("DialogCtrl").initView(content, leftBtnTitle, rightBtnTitle, leftBtnCall, rightBtnCall);
     ViewMgr.getInstance().pushViewImmediate(alert);
 };

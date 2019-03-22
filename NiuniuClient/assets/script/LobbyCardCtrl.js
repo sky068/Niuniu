@@ -12,21 +12,14 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        logo: cc.Sprite,
+        mult: {
+            default: 1,
+            notify(){
+                this.multLabel.string = this.mult + "倍场";
+            }
+        },
+        multLabel: cc.Label
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -34,9 +27,13 @@ cc.Class({
     // onLoad () {},
 
     start () {
-        Global.dataMgr.loadDataFromLocal();
-        Global.loadScene("Lobby");
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
     },
 
+    onTouchEnd(event){
+        cc.log("ddddd");
+        Global.config.roomMulti = this.mult;
+        Global.loadScene("Room");
+    }
     // update (dt) {},
 });

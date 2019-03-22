@@ -12,9 +12,8 @@ cc.Class({
         shopPrefab: cc.Prefab,
         dialogPrefab: cc.Prefab,
         toastPrefab: cc.Prefab,
+        cardPrefab: cc.Prefab,
 
-        prefabTransitionNodeIn: cc.Prefab,
-        prefabTransitionNodeOut: cc.Prefab,
     },
 
     onLoad: function () {

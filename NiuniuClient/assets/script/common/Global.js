@@ -78,3 +78,7 @@ Global.preloadScene = function(_This, sceneName, onLoaded, onProgress) {
     }
 };
 
+Global.loadScene = function(sceneName){
+    Global.eventMgr.emit(Global.config.EVENT_CHANGE_SCENE);
+    cc.director.loadScene(sceneName);
+};
