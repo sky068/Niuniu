@@ -5539,7 +5539,7 @@
       "__id__": 22
     },
     "curBets": 0,
-    "_cards": [],
+    "hands": [],
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false
@@ -10800,7 +10800,7 @@
       "__id__": 187
     },
     "curBets": 0,
-    "_cards": [],
+    "hands": [],
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false
@@ -16061,7 +16061,7 @@
       "__id__": 352
     },
     "curBets": 0,
-    "_cards": [],
+    "hands": [],
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false
@@ -21322,7 +21322,7 @@
       "__id__": 517
     },
     "curBets": 0,
-    "_cards": [],
+    "hands": [],
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false
@@ -26583,7 +26583,7 @@
       "__id__": 682
     },
     "curBets": 0,
-    "_cards": [],
+    "hands": [],
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false

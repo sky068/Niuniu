@@ -10,26 +10,15 @@ cc.Class({
     properties: {
         settingPrefab: cc.Prefab,
         shopPrefab: cc.Prefab,
-        rulesPrefab: cc.Prefab,
-        challengePrefab: cc.Prefab,
-        alertPrefab: cc.Prefab,
-        alertUnlockRolePrefab: cc.Prefab,
-        baseTipShowViewPrefab :cc.Prefab,
-        rankingPrefab: cc.Prefab,
-        alertFbPrefab: cc.Prefab,
-        offlineRewardPrefab: cc.Prefab,
-        getCoinsResPrefab: cc.Prefab,
-        achivePrefab: cc.Prefab,
-        getPropAlertPrefab: cc.Prefab,
-        dailyRewardPrefab: cc.Prefab,
-        subscriptionPrefab: cc.Prefab,
-        subsRewardPrefab: cc.Prefab,
+        dialogPrefab: cc.Prefab,
+        toastPrefab: cc.Prefab,
 
         prefabTransitionNodeIn: cc.Prefab,
         prefabTransitionNodeOut: cc.Prefab,
     },
 
     onLoad: function () {
+        cc.game.addPersistRootNode(this.node);
         Global.assetMgr = this;
         this.setAutoRelease(true);
     },

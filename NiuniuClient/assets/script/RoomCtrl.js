@@ -10,6 +10,8 @@
 
 let Utils = require("./common/UtilsOther");
 let DataMgr = require("./common/DataMgr");
+let Toast = require("./views/ToastCtrl");
+let Dialog = require("./views/DialogCtrl");
 
 cc.Class({
     extends: cc.Component,
@@ -48,7 +50,7 @@ cc.Class({
     start () {
         this.schedule(this.myUpdate, 0.5);
         this.initGame();    // 初始化游戏
-        this.cleanGame();   // 清理游戏，方便开始下一局
+        // this.cleanGame();   // 清理游戏，方便开始下一局
         this.startGame();
     },
 
@@ -100,9 +102,7 @@ cc.Class({
         this.betsTime = 10;
         for (let i = 0; i<5; i++){
             let p = this.getPlayerNode(i).getComponent("PlayerCtrl");
-            p.curBets = 0;
             p.clearHands();
-            p.menuNode.active = true;
         }
     },
 
@@ -113,6 +113,7 @@ cc.Class({
 
     startGame(){
         this.startBets = true;
+        Toast.showText("开始下注.", 1, null);
     },
 
     myUpdate (dt) {
@@ -126,7 +127,7 @@ cc.Class({
             let allOk = true;
             for(let seat of this.seats){
                 let player = seat.getChildByName("PlayerNode").getComponent("PlayerCtrl");
-                if(player.curBets <= 0){
+                if(player.curBets <= 0 && !player.isBanker){
                     allOk = false;
                 }
             }

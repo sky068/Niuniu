@@ -39,6 +39,8 @@ cc.Class({
             default: false,
             notify(){
                 this.bankerSp.active = this.isBanker;
+                this.betLabel.node.active = !this.isBanker;
+                this.menuNode.active = !this.isBanker;
             }
         },
 
@@ -93,6 +95,9 @@ cc.Class({
         this.cardPanelRight.removeAllChildren();
         this.cardPanelRight.width = 0;
         this.hands = [];
+
+        this.payBet(0);
+        this.isBanker = false;
     },
 
     // 下注
