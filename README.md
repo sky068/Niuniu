@@ -11,3 +11,5 @@ master分支为单机模式，一次发牌5张玩法。
 feature_rule3分支为单机模式，先发三张后发两张玩法
 
 net 分支为联网开房玩法.
+
+[在线试玩](http://www.gamelover.net/games/niuniu)
