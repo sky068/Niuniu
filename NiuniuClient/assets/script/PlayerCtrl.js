@@ -106,6 +106,7 @@ cc.Class({
                 break;
             }
             default:
+                downNum = 10;
                 break;
         }
 
@@ -149,14 +150,10 @@ cc.Class({
      */
     openHands(delay){
         this.scheduleOnce(()=>{
-            let names = ["没牛", "牛 ", "牛牛", "银牛", "炸弹", "五花牛", "五小牛"];
+            let names = ["没牛", "牛1", "牛2", "牛3", "牛4", "牛5", "牛6", "牛7", "牛8", "牛9", "牛牛", "银牛", "炸弹", "五花牛", "五小牛"];
             this.typeReturn = getHandsType(this.hands);
             this.cowLabel.node.active = true;
-            if (this.typeReturn.handsType != HandsType.TYPE_NORMAL){
-                this.cowLabel.string = names[this.typeReturn.handsType];
-            } else {
-                this.cowLabel.string = names[this.typeReturn.handsType] + this.typeReturn.cow;
-            }
+            this.cowLabel.string = names[this.typeReturn.handsType];
 
             // 把牌都翻开
             this.cardPanelLeft.removeAllChildren(true);

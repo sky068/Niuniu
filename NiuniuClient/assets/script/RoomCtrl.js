@@ -208,9 +208,7 @@ cc.Class({
         let mult = 1;
         if (typeReturn.handsType === HandsType.TYPE_NONE){
             mult = 1;
-        } else if (typeReturn.handsType === HandsType.TYPE_NORMAL){
-            mult = this.mult + (typeReturn.cow - 10);
-        } else {
+        }  else {
             mult = this.mult + (typeReturn.handsType - HandsType.TYPE_NIUNIU);
         }
 
@@ -290,7 +288,7 @@ cc.Class({
             for(let seat of orders){
                 let player = this.getPlayerNode(seat).getComponent("PlayerCtrl");
                 if(player.curBets <= 0){
-                    player.payBet(10);    // 超时自动下注最小bet
+                    player.onBtnDown(null,1);    // 超时自动下注最小bet
                     this.startBets = false;
                     cc.log("超时自动下注.");
                 }
