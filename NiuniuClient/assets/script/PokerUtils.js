@@ -117,7 +117,7 @@ function sortBig2Samll(cardsArr) {
  */
 function getHandsType(cardsArr) {
     var len = cardsArr.length;
-    if (!cardsArr || len < 1 || len > 5) return new TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
+    if (!cardsArr || len !== 5) return new TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
     sortBig2Samll(cardsArr);
     var totalPoint = 0;
     var realTotalPoint = 0;
