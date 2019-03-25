@@ -221,6 +221,9 @@
     "_components": [
       {
         "__id__": 8
+      },
+      {
+        "__id__": 9
       }
     ],
     "_prefab": null,
@@ -278,6 +281,78 @@
     },
     "cardPrefab": {
       "__uuid__": "afb5a771-5aca-430a-83b6-9e034ed94396"
+    }
+  },
+  {
+    "__type__": "82ca0RGPyVNC7GzTvTyrZ7g",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 7
+    },
+    "_enabled": true,
+    "effNiu_0": {
+      "__uuid__": "f5501410-2bb9-43d4-84a8-3a64d3a4188f"
+    },
+    "effNiu_1": {
+      "__uuid__": "f4e33e1d-e24f-4146-b590-e9523206101d"
+    },
+    "effNiu_2": {
+      "__uuid__": "0bc2b4f8-56fc-4380-b8ac-b5f698f7a99e"
+    },
+    "effNiu_3": {
+      "__uuid__": "7b88ce0a-83b6-4b4d-b6a2-bd25c25e42eb"
+    },
+    "effNiu_4": {
+      "__uuid__": "5a96b66b-acb6-462b-9817-2eca80614aee"
+    },
+    "effNiu_5": {
+      "__uuid__": "80f3f6ac-300f-4544-a2a1-2fa3b52a0059"
+    },
+    "effNiu_6": {
+      "__uuid__": "b9666b87-2c59-4ca7-b2d3-4105db17ada1"
+    },
+    "effNiu_7": {
+      "__uuid__": "22df3731-9329-40d5-8094-806c1ff24444"
+    },
+    "effNiu_8": {
+      "__uuid__": "b995a1a7-2cde-42b4-9986-f1e2111b187d"
+    },
+    "effNiu_9": {
+      "__uuid__": "f1f76280-64fd-460b-9bb7-494fb0ab235a"
+    },
+    "effNiu_10": {
+      "__uuid__": "c83a9a74-2043-4e0b-81fa-b57c96f1883c"
+    },
+    "effNiu_11": {
+      "__uuid__": "ed7aa964-05ee-4e89-9527-339545358f3f"
+    },
+    "effNiu_12": {
+      "__uuid__": "641448ff-7f8e-49dd-82f7-55420014b569"
+    },
+    "effNiu_13": {
+      "__uuid__": "cfb60975-6ace-4696-a9bd-37c89a94dc77"
+    },
+    "effNiu_14": {
+      "__uuid__": "6a6c1737-9941-41c3-8077-0cab3522fd49"
+    },
+    "roomMusic": {
+      "__uuid__": "0385127b-f844-4ef9-a576-f7ba670d55b5"
+    },
+    "gameMusic": {
+      "__uuid__": "2f093cc9-198a-434b-b16a-8ebd12345dde"
+    },
+    "effFlyCoins": {
+      "__uuid__": "671363b6-3876-403e-8ca2-794de36cebb6"
+    },
+    "effFapai": {
+      "__uuid__": "3ec12a4b-693d-4db8-961a-7fdd656a6a84"
+    },
+    "effMdls": {
+      "__uuid__": "3d70ee5e-0002-43b6-a860-dd26d0aa27ae"
+    },
+    "effKaipai": {
+      "__uuid__": "0d3329c1-7acd-4c1a-8d95-170d227a7dc6"
     }
   }
 ]

@@ -34,7 +34,7 @@ cc.Class({
     // onLoad () {},
 
     start () {
-
+        Global.audioMgr.playMusic(Global.audioMgr.roomMusic);
     },
 
     // update (dt) {},

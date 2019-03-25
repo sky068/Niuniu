@@ -42,12 +42,18 @@ cc.Class({
         this.cardsArr = [];      // 当前牌堆
         this.nextBankerSeat = -1;    // 下一个庄家
         this.mult = Global.config.roomMulti;
+        this.betTimeLabel.node.parent.active = false;
     },
 
     start () {
-        this.schedule(this.myUpdate, 0.5);
+        this.schedule(this.myUpdate, 0.1);
         this.initGame();
-        this.startGame();
+
+        this.scheduleOnce(()=>{
+            this.startGame();
+        }, 0.5);
+
+        Global.audioMgr.playMusic(Global.audioMgr.gameMusic);
     },
 
     initGame(){
@@ -117,6 +123,7 @@ cc.Class({
             this.startBets = true;
             this.robotDown();
         });
+        Global.audioMgr.playEffect(Global.audioMgr.effMdls);
     },
 
     // 机器开始下注
@@ -177,6 +184,7 @@ cc.Class({
                     card.x = card.y = 0;
                     card.scale = 1;
                     player.getComponent("PlayerCtrl").cardPanelLeft.addChild(card);
+                    Global.audioMgr.playEffect(Global.audioMgr.effFapai);
                 })));
 
                 t += 0.1;
@@ -191,11 +199,13 @@ cc.Class({
     openHands(){
         cc.log("开始开牌");
         let orders = this.getDealSeatOrder();
-        for (let seat of orders){
-            this.getPlayerNode(seat).getComponent("PlayerCtrl").openHands(Math.random() + 0.2);
+        let t = 0.6;
+        for (let i=0; i<orders.length; i++){
+            let seat = orders[i];
+            this.getPlayerNode(seat).getComponent("PlayerCtrl").openHands(t * i);
         }
 
-        this.scheduleOnce(this.countReward, 1.5);
+        this.scheduleOnce(this.countReward, t * 5);
     },
 
     /**
@@ -259,7 +269,7 @@ cc.Class({
                 this.bankerSeat = this.nextBankerSeat;
                 this.startGame();
             });
-        }, 2);
+        }, 1.5);
     },
 
     myUpdate (dt) {

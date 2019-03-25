@@ -155,6 +155,8 @@ cc.Class({
             this.cowLabel.node.active = true;
             this.cowLabel.string = names[this.typeReturn.handsType];
 
+            Global.audioMgr.playEffect(Global.audioMgr["effNiu_" + this.typeReturn.handsType]);
+
             // 把牌都翻开
             this.cardPanelLeft.removeAllChildren(true);
             for (let cardObj of this.typeReturn.nCards){

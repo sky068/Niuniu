@@ -14,83 +14,89 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        bgGame: {
+        effNiu_0: {
             url: cc.AudioClip,
             default: null
         },
-        effGetCoins: {
+        effNiu_1: {
             url: cc.AudioClip,
             default: null
         },
-        effGetIce: {
+        effNiu_2: {
             url: cc.AudioClip,
             default: null
         },
-        effExplosion: {
+        effNiu_3: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_4: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_5: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_6: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_7: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_8: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_9: {
+            url: cc.AudioClip,
+            default: null
+        },
+        effNiu_10: {
+            url: cc.AudioClip,  // 牛牛
+            default: null
+        },
+        effNiu_11: {
+            url: cc.AudioClip,  // 银牛
+            default: null
+        },
+        effNiu_12: {
+            url: cc.AudioClip,  // 四炸
+            default: null
+        },
+        effNiu_13: {
+            url: cc.AudioClip,  // 五花牛
+            default: null
+        },
+        effNiu_14: {
+            url: cc.AudioClip,  // 五小牛
+            default: null
+        },
+
+
+        roomMusic: {
             url: cc.AudioClip,
             default: null,
         },
-        effBtnClick: {
+        gameMusic: {
             url: cc.AudioClip,
             default: null
         },
-        effBtnClose: {
+        effFlyCoins: {
             url: cc.AudioClip,
             default: null
         },
-        effRolesShoot1: {
+        effFapai: {
             url: cc.AudioClip,
             default: null
         },
-        effRolesShoot2: {
+        effMdls: {
             url: cc.AudioClip,
             default: null
         },
-        effRolesShoot3: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effRolesShoot4: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effRolesShoot5: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effUpgrade: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effEnemyHited: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effEnemyDie_1: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effEnemyDie_2: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effEnemyDie_3: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effEnemyDie_4: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effVictory: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effFail: {
-            url: cc.AudioClip,
-            default: null
-        },
-        effDefence: {
+        effKaipai: {
             url: cc.AudioClip,
             default: null
         }

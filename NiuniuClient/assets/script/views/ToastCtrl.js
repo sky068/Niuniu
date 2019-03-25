@@ -12,6 +12,7 @@ let ToastCtrl = cc.Class({
 
     properties: {
         content: cc.Label,
+        bg: cc.Node,
     },
 
 
