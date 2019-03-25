@@ -48,10 +48,7 @@ cc.Class({
     start () {
         this.schedule(this.myUpdate, 0.1);
         this.initGame();
-
-        this.scheduleOnce(()=>{
-            this.startGame();
-        }, 0.5);
+        this.startGame();
 
         Global.audioMgr.playMusic(Global.audioMgr.gameMusic);
     },
@@ -137,7 +134,7 @@ cc.Class({
                 Global.audioMgr.playEffect(Global.audioMgr.effMdls);
                 this.selfNodeCtrl.showMenu = !this.selfNodeCtrl.isBanker;
             });
-        }, 0.5);
+        }, 1);
     },
 
     // 机器开始下注
@@ -217,14 +214,18 @@ cc.Class({
     // 开牌比较大小
     openHands(){
         cc.log("开始开牌");
-        let orders = this.getDealSeatOrder();
-        let t = 0.6;
-        for (let i=0; i<orders.length; i++){
-            let seat = orders[i];
-            this.getPlayerNode(seat).getComponent("PlayerCtrl").openHands(t * i);
-        }
+        Global.audioMgr.playEffect(Global.audioMgr.effKaipai);
 
-        this.scheduleOnce(this.countReward, t * 5);
+        Toast.showText("开牌!", 1, ()=>{
+            let orders = this.getDealSeatOrder();
+            let t = 0.6;
+            for (let i=0; i<orders.length; i++){
+                let seat = orders[i];
+                this.getPlayerNode(seat).getComponent("PlayerCtrl").openHands(t * i);
+            }
+
+            this.scheduleOnce(this.countReward, t * orders.length);
+        });
     },
 
     /**
