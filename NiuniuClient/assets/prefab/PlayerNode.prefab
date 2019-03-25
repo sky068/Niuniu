@@ -4190,7 +4190,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 157
@@ -4226,7 +4226,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -97
+      "y": -125
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5384,7 +5384,7 @@
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false,
-    "_N$showMenu": false
+    "_N$showMenu": true
   },
   {
     "__type__": "cc.Animation",

@@ -35,9 +35,9 @@ cc.Class({
 
     onLoad () {
         // 自己在正中间
-        this.selfNode = this.getPlayerNode(2);
+        this.selfNodeCtrl = this.getPlayerNode(2).getComponent("PlayerCtrl");
         this.startBets = false;  // 开始下注
-        this.betsTime = 5;      // 等待下注时间
+        this.betsTime = 5;       // 等待下注时间
         this.bankerSeat = -1;    // 庄家座位号
         this.cardsArr = [];      // 当前牌堆
         this.nextBankerSeat = -1;    // 下一个庄家
@@ -70,7 +70,7 @@ cc.Class({
         }
 
         // 初始化自己
-        this.selfNode.getComponent("PlayerCtrl").coins = Global.dataMgr.playerObj.coins;
+        this.selfNodeCtrl.initPlayer("逢赌必赢君", "myicon", Global.dataMgr.playerObj.coins);
 
         // 开局随机一个庄家
         this.bankerSeat = this.nextBankerSeat = Utils.randomInteger(0,4);
@@ -118,12 +118,26 @@ cc.Class({
     },
 
     startGame(){
+        // 金币不足无法继续
+        if (Global.dataMgr.playerObj.coins < this.mult * 50 * 4){
+            Dialog.show("金币不足" + this.mult * 50 * 4 + "，请充值.", null, "确定", null, ()=>{
+                Global.loadScene("Lobby");
+            });
+            return;
+        }
+
         this.getPlayerNode(this.bankerSeat).getComponent("PlayerCtrl").isBanker = true;
-        Toast.showText("请开始下注.", 1, ()=>{
-            this.startBets = true;
-            this.robotDown();
-        });
-        Global.audioMgr.playEffect(Global.audioMgr.effMdls);
+
+        this.scheduleOnce(()=>{
+            this.startDeal(3, ()=>{
+                Toast.showText("请开始下注.", 1, ()=>{
+                    this.startBets = true;
+                    this.robotDown();
+                });
+                Global.audioMgr.playEffect(Global.audioMgr.effMdls);
+                this.selfNodeCtrl.showMenu = !this.selfNodeCtrl.isBanker;
+            });
+        }, 0.5);
     },
 
     // 机器开始下注
@@ -137,16 +151,20 @@ cc.Class({
             if (seat === 2 || player.isBanker) continue;
 
             // 机器人自动加钱
-            if (player.coins < 100){
+            if (player.coins < 2000){
                 player.coins = 100000;
             }
             player.payBet(-1, Math.random() + 0.5);
         }
     },
 
-    // 开始发牌
-    startDeal(){
-        cc.log("开始发牌.");
+    /**
+     *
+     * @param count{Number} 发牌张数
+     * @param cb{function} 回调函数
+     */
+    startDeal(count, cb){
+        cc.log("开始发牌." + count + "张.");
         let self = this;
         let t = 0;
         let zIndex = Global.config.LOCAL_ZINDEX_MAX;
@@ -154,36 +172,37 @@ cc.Class({
 
         let order = this.getDealSeatOrder();
 
-        if (this.cardsArr.length < 15){
+        if (this.cardsArr.length < count * 5){
             cc.log("牌不够，洗牌.");
             this.cardsArr = create1pairPoker(true);
         }
 
         for (let seat of order){
-            let cards = this.cardsArr.slice(0, 5);
+            let cards = this.cardsArr.slice(0, count);
             sortBig2Samll(cards);
-            this.getPlayerNode(seat).getComponent("PlayerCtrl").hands = cards;
-            this.cardsArr = this.cardsArr.slice(5);
-
-            _dealAct(seat);
+            this.cardsArr = this.cardsArr.slice(count);
+            _dealAct(seat, cards);
         }
 
-        // 发牌动画
-        function _dealAct(seat) {
-            let player = self.getPlayerNode(seat);
-            for (let i=0; i<5; i++){
-                let card = cc.instantiate(self.cardHeapSeat.getChildByName("cardBg"));
+        // 执行发牌并展示动画
+        function _dealAct(seat, cards) {
+            let playerCtrl = self.getPlayerNode(seat).getComponent("PlayerCtrl");
+            for (let i=0; i<cards.length; i++){
+                let cardObj = cards[i];
+                playerCtrl.hands.push(cardObj); // 真发牌
+                let card = cc.instantiate(Global.assetMgr.cardPrefab);
+                card.getComponent("CardCtrl").initCard(cardObj.point, cardObj.suit, seat === 2);
                 card.scale = 0.5;
                 card.zIndex = zIndex;
                 let posOri = root.convertToNodeSpaceAR(root.convertToWorldSpaceAR(self.cardHeapSeat.getPosition()));
-                let posDes = root.convertToNodeSpaceAR(player.getComponent("PlayerCtrl").cardPanelLeft.convertToWorldSpaceAR(cc.v2(0,0)));
+                let posDes = root.convertToNodeSpaceAR(playerCtrl.cardPanelLeft.convertToWorldSpaceAR(cc.v2(0,0)));
                 root.addChild(card);
                 card.setPosition(posOri);
                 card.runAction(cc.sequence(cc.delayTime(t), cc.moveTo(0.1,posDes), cc.callFunc(()=>{
                     card.removeFromParent(true);
                     card.x = card.y = 0;
                     card.scale = 1;
-                    player.getComponent("PlayerCtrl").cardPanelLeft.addChild(card);
+                    playerCtrl.cardPanelLeft.addChild(card);
                     Global.audioMgr.playEffect(Global.audioMgr.effFapai);
                 })));
 
@@ -192,7 +211,7 @@ cc.Class({
             }
         }
 
-        this.scheduleOnce(this.openHands, t + 0.5);
+        this.scheduleOnce(cb, t + 0.5);
     },
 
     // 开牌比较大小
@@ -256,8 +275,7 @@ cc.Class({
         }
         banker.addReward(bankerReward);
 
-
-        Global.dataMgr.playerObj.coins = this.selfNode.getComponent("PlayerCtrl").coins;
+        Global.dataMgr.playerObj.coins = this.selfNodeCtrl.coins;
         Global.dataMgr.saveDataToLocal();
 
         this.scheduleOnce(()=>{
@@ -277,7 +295,7 @@ cc.Class({
             return;
         }
 
-        this.betTimeLabel.string = parseInt(this.betsTime);
+        this.betTimeLabel.string = Math.ceil(this.betsTime);
         this.betsTime -= dt;
         if (this.betsTime > 0){
             this.betTimeLabel.node.parent.active = true;
@@ -305,10 +323,12 @@ cc.Class({
             }
         }
 
-        // 已经下好注，开始发牌
+        // 已经下好注，开始发生于的2张牌
         if (!this.startBets){
             this.betTimeLabel.node.parent.active = false;
-            this.startDeal();
+            this.startDeal(2, ()=>{
+                this.openHands();
+            });
         }
     },
 });

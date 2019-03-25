@@ -43,7 +43,6 @@ cc.Class({
             notify(){
                 this.bankerSp.active = this.isBanker;
                 this.betLabel.node.active = !this.isBanker;
-                this.menuNode.active = this.showMenu && !this.isBanker;
             }
         },
 
@@ -59,7 +58,6 @@ cc.Class({
 
         betLabel: cc.Label,
         curBets: 0,         // 当前下注
-
 
         hands: [],
 
@@ -124,6 +122,7 @@ cc.Class({
 
         this.payBet(0);
         this.isBanker = false;
+        this.showMenu = false;
         this.cowLabel.node.active = false;
         this.rewardLabel.node.active = false;
         this.typeReturn = null;

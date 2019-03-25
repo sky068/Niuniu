@@ -11536,7 +11536,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
+      "width": 121,
       "height": 149
     },
     "_rotationX": 0,
@@ -11564,7 +11564,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "add94ed8-7694-4f39-b4c4-efd99fb6e0bd"
+      "__uuid__": "d6a84817-046f-451a-ae05-848f55b06bdd"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -15542,7 +15542,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 510
@@ -15578,7 +15578,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -97
+      "y": -120
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -16736,7 +16736,7 @@
     "_N$nickName": "Mark",
     "_N$coins": 999999,
     "_N$isBanker": false,
-    "_N$showMenu": true
+    "_N$showMenu": false
   },
   {
     "__type__": "cc.Animation",
