@@ -11,6 +11,8 @@ GCONFIG.DEBUG_MODE = false; // 是否debug模式
 
 GCONFIG.roomMulti = 1;
 
+GCONFIG.BETS_WAITING = 10;  // 下注等待时间
+
 //------------key start------------
 GCONFIG.KEY_SETTING = "KEY_SETTING";
 GCONFIG.KEY_PLAYERDATA = "KEY_PLAYERDATA";

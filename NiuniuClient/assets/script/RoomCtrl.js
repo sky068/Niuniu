@@ -37,7 +37,6 @@ cc.Class({
         // 自己在正中间
         this.selfNodeCtrl = this.getPlayerNode(2).getComponent("PlayerCtrl");
         this.startBets = false;  // 开始下注
-        this.betsTime = 5;       // 等待下注时间
         this.bankerSeat = -1;    // 庄家座位号
         this.cardsArr = [];      // 当前牌堆
         this.nextBankerSeat = -1;    // 下一个庄家
@@ -97,7 +96,6 @@ cc.Class({
 
     // 清理游戏，方便开始下一局
     cleanGame(){
-        this.betsTime = 5;
         for (let i = 0; i<5; i++){
             let p = this.getPlayerNode(i).getComponent("PlayerCtrl");
             p.clearHands();
@@ -129,6 +127,7 @@ cc.Class({
             this.startDeal(3, ()=>{
                 Toast.showText("请开始下注.", 1, ()=>{
                     this.startBets = true;
+                    this.betsTime = Global.config.BETS_WAITING;
                     this.robotDown();
                 });
                 Global.audioMgr.playEffect(Global.audioMgr.effMdls);
