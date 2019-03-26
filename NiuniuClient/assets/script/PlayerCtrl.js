@@ -103,6 +103,10 @@ cc.Class({
                 downNum = 50;
                 break;
             }
+            case 4:{
+                downNum = 100;
+                break;
+            }
             default:
                 downNum = 10;
                 break;
@@ -130,7 +134,7 @@ cc.Class({
 
     /**
      *
-     * @param bet 下注，-1表示随机下注
+     * @param bet 下注，-1表示随机自动下注
      * @param delay 延迟操作，方便机器人控制
      */
     payBet(bet, delay){
@@ -138,14 +142,15 @@ cc.Class({
             if (bet < 0){
                 // 如果手中三张可以组成牛则下大注
                 let sum = 0;
-                for (let card of this.hands){
+                for (let i=0; i<3; i++){
+                    let card = this.hands[i];
                     sum += (card.point <= 10 ? card.point : 10);
                 }
                 cc.log("sum: " + sum + ",sum%10:" + sum % 10);
                 if (sum % 10 === 0){
-                    bet = 50;
+                    bet = [50,100][Utils.randomInteger(0,1)];
                 } else {
-                    bet = [10,20,50][Utils.randomInteger(0,2)];
+                    bet = [10,20,50,100][Utils.randomInteger(0,3)];
                 }
             }
             this.curBets = bet;
