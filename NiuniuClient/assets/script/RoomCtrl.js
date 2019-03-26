@@ -116,7 +116,7 @@ cc.Class({
 
     startGame(){
         // 金币不足无法继续
-        if (Global.dataMgr.playerObj.coins < this.mult * 50 * 4){
+        if (Global.dataMgr.playerObj.coins < this.mult * 100 * 4){
             Dialog.show("金币不足" + this.mult * 50 * 4 + "，请充值.", null, "确定", null, ()=>{
                 Global.loadScene("Lobby");
             });
@@ -164,7 +164,7 @@ cc.Class({
             if (seat === 2 || player.isBanker) continue;
 
             // 机器人自动加钱
-            if (player.coins < 2000){
+            if (player.coins < this.mult * 100 * 4){
                 player.coins = 100000;
             }
             player.payBet(-1, Math.random() + 0.5);
