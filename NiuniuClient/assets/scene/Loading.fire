@@ -281,6 +281,9 @@
     },
     "cardPrefab": {
       "__uuid__": "afb5a771-5aca-430a-83b6-9e034ed94396"
+    },
+    "modeSelPre": {
+      "__uuid__": "60a0242c-c4d9-46fe-9992-cb97dfa7aa78"
     }
   },
   {
@@ -353,6 +356,9 @@
     },
     "effKaipai": {
       "__uuid__": "0d3329c1-7acd-4c1a-8d95-170d227a7dc6"
+    },
+    "effBtnClose": {
+      "__uuid__": "65e3e777-9a97-45b0-aec5-98a80f0042cb"
     }
   }
 ]

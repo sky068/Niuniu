@@ -8,6 +8,7 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
+let ModeSelCtrl = require("./views/ModeSelViewCtrl");
 cc.Class({
     extends: cc.Component,
 
@@ -31,9 +32,8 @@ cc.Class({
     },
 
     onTouchEnd(event){
-        cc.log("ddddd");
-        Global.config.roomMulti = this.mult;
-        Global.loadScene("Room");
+        Global.config.ROOM_MULT = this.mult;
+        ModeSelCtrl.show();
     }
     // update (dt) {},
 });

@@ -34,13 +34,13 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        // 自己在正中间
+        // 自己在正中间,座位号为2
         this.selfNodeCtrl = this.getPlayerNode(2).getComponent("PlayerCtrl");
         this.startBets = false;  // 开始下注
         this.bankerSeat = -1;    // 庄家座位号
         this.cardsArr = [];      // 当前牌堆
         this.nextBankerSeat = -1;    // 下一个庄家
-        this.mult = Global.config.roomMulti;
+        this.mult = Global.config.ROOM_MULT;
         this.betTimeLabel.node.parent.active = false;
     },
 
@@ -94,7 +94,9 @@ cc.Class({
         return order;
     },
 
-    // 清理游戏，方便开始下一局
+    /**
+     * 清理游戏，方便开始下一局
+     */
     cleanGame(){
         for (let i = 0; i<5; i++){
             let p = this.getPlayerNode(i).getComponent("PlayerCtrl");
@@ -124,19 +126,34 @@ cc.Class({
         this.getPlayerNode(this.bankerSeat).getComponent("PlayerCtrl").isBanker = true;
 
         this.scheduleOnce(()=>{
-            this.startDeal(3, ()=>{
-                Toast.showText("请开始下注.", 1, ()=>{
-                    this.startBets = true;
-                    this.betsTime = Global.config.BETS_WAITING;
-                    this.robotDown();
+            if (Global.config.GAME_MODE < 5){
+                // 下发牌后下注
+                this.startDeal(Global.config.GAME_MODE, ()=>{
+                    this.startBetDown();
                 });
-                Global.audioMgr.playEffect(Global.audioMgr.effMdls);
-                this.selfNodeCtrl.showMenu = !this.selfNodeCtrl.isBanker;
-            });
+            } else {
+                // 先下注后发牌
+                this.startBetDown();
+            }
         }, 1);
     },
 
-    // 机器开始下注
+    /**
+     * 开始下注
+     */
+    startBetDown(){
+        Toast.showText("请开始下注.", 1, ()=>{
+            this.startBets = true;
+            this.betsTime = Global.config.BETS_WAITING;
+            this.robotDown();
+        });
+        Global.audioMgr.playEffect(Global.audioMgr.effMdls);
+        this.selfNodeCtrl.showMenu = !this.selfNodeCtrl.isBanker;
+    },
+
+    /**
+     * 给机器下注
+     */
     robotDown(){
         // 自动给机器人下注
         let orders = this.getDealSeatOrder();
@@ -155,55 +172,56 @@ cc.Class({
     },
 
     /**
-     *
+     * 开发发牌
      * @param count{Number} 发牌张数
      * @param cb{function} 回调函数
      */
     startDeal(count, cb){
         cc.log("开始发牌." + count + "张.");
-        let self = this;
         let t = 0;
-        let zIndex = Global.config.LOCAL_ZINDEX_MAX;
-        let root = self.cardHeapSeat.parent;
+        if (count > 0){
+            let self = this;
+            let zIndex = Global.config.LOCAL_ZINDEX_MAX;
+            let root = self.cardHeapSeat.parent;
+            let order = this.getDealSeatOrder();
 
-        let order = this.getDealSeatOrder();
+            if (this.cardsArr.length < count * 5){
+                cc.log("牌不够，洗牌.");
+                this.cardsArr = create1pairPoker(true);
+            }
 
-        if (this.cardsArr.length < count * 5){
-            cc.log("牌不够，洗牌.");
-            this.cardsArr = create1pairPoker(true);
-        }
+            for (let seat of order){
+                let cards = this.cardsArr.slice(0, count);
+                sortBig2Samll(cards);
+                this.cardsArr = this.cardsArr.slice(count);
+                _dealAct(seat, cards);
+            }
 
-        for (let seat of order){
-            let cards = this.cardsArr.slice(0, count);
-            sortBig2Samll(cards);
-            this.cardsArr = this.cardsArr.slice(count);
-            _dealAct(seat, cards);
-        }
+            // 执行发牌并展示动画
+            function _dealAct(seat, cards) {
+                let playerCtrl = self.getPlayerNode(seat).getComponent("PlayerCtrl");
+                for (let i=0; i<cards.length; i++){
+                    let cardObj = cards[i];
+                    playerCtrl.hands.push(cardObj); // 发牌给玩家
+                    let card = cc.instantiate(Global.assetMgr.cardPrefab);
+                    card.getComponent("CardCtrl").initCard(cardObj.point, cardObj.suit, seat === 2);
+                    card.scale = 0.5;
+                    card.zIndex = zIndex;
+                    let posOri = root.convertToNodeSpaceAR(root.convertToWorldSpaceAR(self.cardHeapSeat.getPosition()));
+                    let posDes = root.convertToNodeSpaceAR(playerCtrl.cardPanelLeft.convertToWorldSpaceAR(cc.v2(0,0)));
+                    root.addChild(card);
+                    card.setPosition(posOri);
+                    card.runAction(cc.sequence(cc.delayTime(t), cc.moveTo(0.1,posDes), cc.callFunc(()=>{
+                        card.removeFromParent(true);
+                        card.x = card.y = 0;
+                        card.scale = 1;
+                        playerCtrl.cardPanelLeft.addChild(card);
+                        Global.audioMgr.playEffect(Global.audioMgr.effFapai);
+                    })));
 
-        // 执行发牌并展示动画
-        function _dealAct(seat, cards) {
-            let playerCtrl = self.getPlayerNode(seat).getComponent("PlayerCtrl");
-            for (let i=0; i<cards.length; i++){
-                let cardObj = cards[i];
-                playerCtrl.hands.push(cardObj); // 真发牌
-                let card = cc.instantiate(Global.assetMgr.cardPrefab);
-                card.getComponent("CardCtrl").initCard(cardObj.point, cardObj.suit, seat === 2);
-                card.scale = 0.5;
-                card.zIndex = zIndex;
-                let posOri = root.convertToNodeSpaceAR(root.convertToWorldSpaceAR(self.cardHeapSeat.getPosition()));
-                let posDes = root.convertToNodeSpaceAR(playerCtrl.cardPanelLeft.convertToWorldSpaceAR(cc.v2(0,0)));
-                root.addChild(card);
-                card.setPosition(posOri);
-                card.runAction(cc.sequence(cc.delayTime(t), cc.moveTo(0.1,posDes), cc.callFunc(()=>{
-                    card.removeFromParent(true);
-                    card.x = card.y = 0;
-                    card.scale = 1;
-                    playerCtrl.cardPanelLeft.addChild(card);
-                    Global.audioMgr.playEffect(Global.audioMgr.effFapai);
-                })));
-
-                t += 0.1;
-                zIndex --;
+                    t += 0.1;
+                    zIndex --;
+                }
             }
         }
 
@@ -323,10 +341,11 @@ cc.Class({
             }
         }
 
-        // 已经下好注，开始发生于的2张牌
+        // 已经下好注，开始发剩下的牌
         if (!this.startBets){
             this.betTimeLabel.node.parent.active = false;
-            this.startDeal(2, ()=>{
+            let cardCounts = Global.config.GAME_MODE < 5 ? (5-Global.config.GAME_MODE) : Global.config.GAME_MODE;
+            this.startDeal(cardCounts, ()=>{
                 this.openHands();
             });
         }

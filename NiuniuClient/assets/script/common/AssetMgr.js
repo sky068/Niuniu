@@ -13,7 +13,7 @@ cc.Class({
         dialogPrefab: cc.Prefab,
         toastPrefab: cc.Prefab,
         cardPrefab: cc.Prefab,
-
+        modeSelPre: cc.Prefab,
     },
 
     onLoad: function () {

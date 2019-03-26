@@ -142,17 +142,20 @@ cc.Class({
             if (bet < 0){
                 // 如果手中三张可以组成牛则下大注
                 let sum = 0;
-                for (let i=0; i<3; i++){
-                    let card = this.hands[i];
-                    sum += (card.point <= 10 ? card.point : 10);
+                if (this.hands.length > 3){
+                    for (let i=0; i<3; i++){
+                        let card = this.hands[i];
+                        sum += (card.point <= 10 ? card.point : 10);
+                    }
                 }
                 cc.log("sum: " + sum + ",sum%10:" + sum % 10);
-                if (sum % 10 === 0){
+                if (sum > 0 && sum % 10 === 0){
                     bet = [50,100][Utils.randomInteger(0,1)];
                 } else {
                     bet = [10,20,50,100][Utils.randomInteger(0,3)];
                 }
             }
+
             this.curBets = bet;
             this.betLabel.string = "下注:" + bet;
         }, delay != undefined ? delay : 0);

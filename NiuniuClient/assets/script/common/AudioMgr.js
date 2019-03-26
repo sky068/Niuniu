@@ -99,6 +99,10 @@ cc.Class({
         effKaipai: {
             url: cc.AudioClip,
             default: null
+        },
+        effBtnClose: {
+            url: cc.AudioClip,
+            default: null
         }
     },
 
