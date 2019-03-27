@@ -204,7 +204,7 @@ cc.Class({
                     let cardObj = cards[i];
                     playerCtrl.hands.push(cardObj); // 发牌给玩家
                     let card = cc.instantiate(Global.assetMgr.cardPrefab);
-                    card.getComponent("CardCtrl").initCard(cardObj.point, cardObj.suit, seat === 2);
+                    card.getComponent("CardCtrl").initCard(cardObj.point, cardObj.suit, false);
                     card.scale = 0.5;
                     card.zIndex = zIndex;
                     let posOri = root.convertToNodeSpaceAR(root.convertToWorldSpaceAR(self.cardHeapSeat.getPosition()));
@@ -215,6 +215,7 @@ cc.Class({
                         card.removeFromParent(true);
                         card.x = card.y = 0;
                         card.scale = 1;
+                        card.getComponent("CardCtrl").showFace = seat === 2;
                         playerCtrl.cardPanelLeft.addChild(card);
                         Global.audioMgr.playEffect(Global.audioMgr.effFapai);
                     })));
