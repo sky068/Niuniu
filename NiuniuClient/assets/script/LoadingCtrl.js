@@ -35,7 +35,6 @@ cc.Class({
 
     start () {
         Global.dataMgr.loadDataFromLocal();
-        Global.loadScene("Lobby");
     },
 
     // update (dt) {},

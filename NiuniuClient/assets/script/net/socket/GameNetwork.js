@@ -148,11 +148,11 @@ let GameNetwork = cc.Class({
          * @type {object.<BaseResponse>}
          */
         var response = new responseClass();
-        response.loadData(responseJson.data);
-        response.act = responseJson.act;
-        response.seq = responseJson.seq;
-        response.err = responseJson.err;
-        response.ts = responseJson.ts;
+        response.loadData(responseJson);
+
+        // response.act = responseJson.act;
+        // response.seq = responseJson.seq;
+        // response.err = responseJson.err;
 
         // 如果指定了回调函数，先回调
         var ignoreError = false;
@@ -210,43 +210,23 @@ let GameNetwork = cc.Class({
             this._networkCallbacks[request.seq] = new NetworkCallback();
             this._networkCallbacks[request.seq].init(request, opt_callback);
         }
-        this._sendSocketRequest(false, request);
+        this._sendSocketRequest(request);
     },
 
     /**
-     * sendRequest的不发送data字段
-     */
-    sendRequestNoData: function (request, opt_callback) {
-        // 每个请求的seq应该唯一，且递增
-        request.seq = ++this._requestSequenceId;
-
-        //生成NetworkCallback对象，绑定请求seq和回调方法
-        if(opt_callback){
-            this._networkCallbacks[request.seq] = new NetworkCallback();
-            this._networkCallbacks[request.seq].init(request, opt_callback);
-        }
-        this._sendSocketRequest(true, request);
-    },
-
-    /**
-     * @param {Boolean} isNoData
      * @param {object.<BaseRequest>} req
      */
-    _sendSocketRequest: function (isNoData, req) {
+    _sendSocketRequest: function (req) {
         cc.assert(this._socket);
 
         if (this.isSocketOpened()){
             //通过json的方法生成请求字符串
-            var msg = null;
-            if(isNoData){
-                msg = JSON.stringify({seq:req.seq, act:req.act});
-            }else{
-                msg = JSON.stringify({seq:req.seq, act:req.act, data:req});
-            }
+            let msg = JSON.stringify(req);
             cc.log("WebSocketDelegate::send->" + msg);
             this._socket.send(msg);
         } else{
             // todo
+            cc.log("socket error, can not send req: " + msg);
         }
     }
 });

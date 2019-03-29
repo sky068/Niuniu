@@ -8,7 +8,7 @@ let GameNetwork = require("./GameNetwork");
 let GameProtocols = require("./GameProtocols");
 let DataMgr = require("./../../Common/DataMgr");
 
-let GAME_SERVER_URL = 'ws://127.0.0.1:3005';
+let GAME_SERVER_URL = 'ws://127.0.0.1:3005/ws';
 // GAME_SERVER_URL = 'wss://echo.websocket.org';
 // GAME_SERVER_URL = "ws://45.123.197.93:3005";
 

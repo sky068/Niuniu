@@ -224,6 +224,9 @@
       },
       {
         "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": null,
@@ -360,5 +363,14 @@
     "effBtnClose": {
       "__uuid__": "65e3e777-9a97-45b0-aec5-98a80f0042cb"
     }
+  },
+  {
+    "__type__": "025f2MJc0ZF97veI+ig8WZ4",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 7
+    },
+    "_enabled": true
   }
 ]

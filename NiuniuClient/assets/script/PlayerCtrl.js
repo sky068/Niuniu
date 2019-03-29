@@ -14,7 +14,13 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        uid: 0,
+        uidLabel: cc.Label,
+        uid: {
+            default: 0,
+            notify(){
+                this.uidLabel.string = "uid:" + this.uid;
+            }
+        },
         avatar: cc.Sprite,
         nickNameLabel: cc.Label,
         nickName: {
@@ -85,6 +91,13 @@ cc.Class({
                 }
             });
         }
+    },
+
+    initPlayerWithData(data){
+        this.nickName = data.nickname;
+        this.coins = data.coins;
+        // todo: 头像暂时不更新
+        this.uid =data.uid;
     },
 
     onBtnDown(send, data){

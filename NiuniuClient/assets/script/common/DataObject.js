@@ -26,7 +26,6 @@ let DataObject = cc.Class({
                 this[key] = data[key];
             }
         }
-        return this;
     },
 
     // 只保留属性字段，不保留function
@@ -48,8 +47,13 @@ let PlayerObject = cc.Class({
         fbicon: "",
         fbname: "",
         fb_cache_key: "",           // facebook icon cache key
-        coins: 100000,                   // 初始金币
+
+        bid: "",
+        coins: 100000,              // 初始金币
         nickname: "",
+        rkeys: 10,
+        avatar: "",
+
     },
 
     ctor(){

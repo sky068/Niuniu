@@ -68,7 +68,7 @@ let HeartRequest = cc.Class({
     extends: BaseRequest,
     ctor(){
         this.act = 'heart';
-        this.t = -1;    // 发送时间
+        this.t = 0;    // 发送时间
     }
 });
 
@@ -77,7 +77,7 @@ let HeartResponse = cc.Class({
 
     ctor(){
         this.act = 'heart';
-        this.t = -1;
+        this.t = 0;
     }
 });
 //-------------------------------------------------------
@@ -268,28 +268,11 @@ let LoginResponse = cc.Class({
 
     ctor: function () {
         this.act = 'login';
-
-        /**
-         * 游客第一次登录时返回的token，需要客户端保存
-         */
-        this.token = '';
-
-        this.self = {
-            isBlack: false,
-            chessDic: {}
-        };
-
-        this.other = {
-            isBlack: false,
-            chessDic: {},
-            uid: 0
-        };
-
-        this.order = 0;
-
-        this.rid = 0;
-
-        this.isReconn = false;  // 是否断线重连
+        this.uid = 0;
+        this.bid = 0;
+        this.coins = 0;
+        this.nickname = "";
+        this.avatar = "";
 
     }
 });

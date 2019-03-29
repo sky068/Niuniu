@@ -11,6 +11,7 @@
 let Utils = require("./common/UtilsOther");
 let Toast = require("./views/ToastCtrl");
 let Dialog = require("./views/DialogCtrl");
+let playerObj = require("./common/DataMgr").getInstance().playerObj;
 
 cc.Class({
     extends: cc.Component,
@@ -66,7 +67,7 @@ cc.Class({
         }
 
         // 初始化自己
-        this.selfNodeCtrl.initPlayer("逢赌必赢君", "myicon", Global.dataMgr.playerObj.coins);
+        this.selfNodeCtrl.initPlayerWithData(playerObj);
 
         // 开局随机一个庄家
         this.bankerSeat = this.nextBankerSeat = Utils.randomInteger(0,4);
