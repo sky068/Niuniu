@@ -71,48 +71,6 @@ class HeartResponse extends BaseResponse{
     }
 };
 
-/**
- * 随机匹配返回结果
- */
-class RandomMatchResponse extends BaseResponse{
-    constructor(act, seq){
-        super();
-        this.act = act;
-        this.seq = seq;
-
-        this.rid = 0;       // 房间id
-        this.black = 0;     // 黑子uid
-        this.other = 0;     // 对手
-        this.order = 0;     // 走棋uid
-    }
-};
-
-class PushExitRoom extends BaseResponse{
-    constructor(uid){
-        super();
-        this.act = "exitRoom";
-        this.seq = 1;
-        this.uid = uid;
-    }
-}
-
-class PushPlayChess extends BaseResponse {
-    constructor(){
-        super();
-        this.act = "playChess"
-        this.seq = 1;
-        this.winner = 0;
-        this.uid = 0;
-        this.order = 0;
-        this.cid = 0;
-        this.dest = {
-            index: 0,
-            x: 0,
-            y:0,
-        }
-    }
-}
-
 class LoginResponse extends BaseResponse{
     constructor(){
         super();
@@ -124,17 +82,35 @@ class LoginResponse extends BaseResponse{
     }
 }
 
-class PushSelectChess extends BaseResponse{
-    constructor(cid){
-        super();
-        this.cid = cid;
-    }
-}
-
 class CreateRoomResponse extends BaseResponse{
     constructor(){
         super();
         this.rid = 0;
+        this.users = [];
+    }
+}
+
+class EnterRoomResponse extends CreateRoomResponse{
+    constructor(){
+        super();
+    }
+}
+
+class PushEnterRoom extends BaseResponse{
+    constructor(user){
+        super();
+        this.act = "pEnterRoom";
+        this.seq = 1;
+        this.user = user;
+    }
+}
+
+class PushExitRoom extends BaseResponse{
+    constructor(user){
+        super();
+        this.act = "pExitRoom";
+        this.seq = 1;
+        this.user = user;
     }
 }
 
@@ -142,9 +118,8 @@ class CreateRoomResponse extends BaseResponse{
 module.exports = {
     HeartResponse: HeartResponse,
     LoginResponse: LoginResponse,
-    RandomMatchResponse: RandomMatchResponse,
-    PushPlayChess: PushPlayChess,
-    PushExitRoom: PushExitRoom,
-    PushSelectChess: PushSelectChess,
     CreateRoomResponse: CreateRoomResponse,
+    EnterRoomResponse: EnterRoomResponse,
+    PushExitRoom: PushExitRoom,
+    PushEnterRoom: PushEnterRoom,
 }

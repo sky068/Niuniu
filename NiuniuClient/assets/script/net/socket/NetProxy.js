@@ -6,7 +6,7 @@
 
 let GameNetwork = require("./GameNetwork");
 let GameProtocols = require("./GameProtocols");
-let DataMgr = require("./../../Common/DataMgr");
+let playerData = require("./../../Common/DataMgr").getInstance().playerObj;
 
 let GAME_SERVER_URL = 'ws://127.0.0.1:3005/ws';
 // GAME_SERVER_URL = 'wss://echo.websocket.org';
@@ -122,7 +122,7 @@ let NetProxy = cc.Class({
 
     chat: function (msg) {
         let req = new GameProtocols.ChatRequest();
-        let uid = DataMgr.getInstance().playerObj.uid;
+        let uid = playerData.uid;
         req.uid = uid;
         req.msg = msg;
         this.network.sendRequest(req);
@@ -131,14 +131,14 @@ let NetProxy = cc.Class({
     // 开始随机匹配
     randomMatch: function () {
         let req = new GameProtocols.RandomMatchRequest();
-        let uid = DataMgr.getInstance().playerObj.uid;
+        let uid = playerData.uid;
         req.uid = uid;
         this.network.sendRequest(req);
     },
 
     playChess: function (msg) {
         let req = new GameProtocols.PlayChessRequest();
-        let uid = DataMgr.getInstance().playerObj.uid;
+        let uid = playerData.uid;
         req.uid = uid;
         req.lastBedIndex = msg.lastBedIndex;
         req.cid = msg.cid;
@@ -154,12 +154,14 @@ let NetProxy = cc.Class({
 
     createRoom: function (cb) {
         let req = new GameProtocols.CreateRoomRequest();
+        req.uid = playerData.uid;
         this.network.sendRequest(req, cb);
     },
 
     joinRoom: function (rid) {
         let req = new GameProtocols.JoinRoomRequest();
         req.rid = rid;
+        req.uid = playerData.uid;
         this.network.sendRequest(req);
     },
 

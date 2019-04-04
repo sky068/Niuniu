@@ -1,10 +1,9 @@
-let g = {};
-
+let MyUtils = {};
 let EventEmitter = require('events').EventEmitter;
 
-g.eventEmitter = new EventEmitter();
+MyUtils.eventEmitter = new EventEmitter();
 
-g.rm1ElementFromArr = function(arr, ele){
+MyUtils.rm1ElementFromArr = function(arr, ele){
     for (let index=0; index<arr.length; index++){
         if (arr[index] == ele){
             arr.splice(index,1);
@@ -13,4 +12,4 @@ g.rm1ElementFromArr = function(arr, ele){
     }
 };
 
-module.exports = g;
+module.exports = MyUtils;

@@ -104,6 +104,7 @@ let CreateRoomRequest = cc.Class({
     extends: BaseRequest,
     ctor(){
         this.act = "createRoom";
+        this.uid = 0;
     }
 });
 
@@ -112,14 +113,16 @@ let CreateRoomResponse = cc.Class({
     ctor(){
         this.act = "createRoom";
         this.rid = 0;
+        this.users = [];
     }
 });
 //-------------------------------------------------------
-let JoinRoomRequest = cc.Class({
+let EnterRoomRequest = cc.Class({
     extends: BaseRequest,
     ctor(){
-        this.act = "joinRoom";
+        this.act = "enterRoom";
         this.rid = 0;
+        this.uid = 0;
     }
 });
 //-------------------------------------------------------
@@ -544,7 +547,7 @@ module.exports = {
     SelectChessRequest: SelectChessRequest,
     CreateRoomRequest: CreateRoomRequest,
     CreateRoomResponse: CreateRoomResponse,
-    JoinRoomRequest:JoinRoomRequest,
+    EnterRoomRequest:EnterRoomRequest,
 
     // debug
     DebugChangeMeRequest: DebugChangeMeRequest,

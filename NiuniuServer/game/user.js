@@ -1,11 +1,12 @@
 class User{
-    constructor(socket, uid){
-        socket.uid = uid;       // 用户id   快速索引用户
-        socket.rid = 0;         // 房间id   快速索引房间
+    constructor(socket, uid, name, icon, coins){
         this.socket = socket;
+
         this.uid = uid;
-        this.isBlack = false;
-        this.chessDic = {};     // 棋子，索引为棋子cid
+        this.nickName = name;
+        this.avatar = icon;
+        this.coins = coins;
+        this.isBanker = false;
     }
 }
 
