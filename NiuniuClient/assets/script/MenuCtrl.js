@@ -12,37 +12,38 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        editBox: cc.EditBox,
+        inputLayer: cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.inputLayer.active = false;
+    },
 
     start () {
-
+        // 连接网络
+        Global.netProxy.connect();
     },
 
     onBtnOpenRoom(){
-
+        Global.netProxy.createRoom((resp)=>{
+            Global.gameMgr.onOpenRoom(resp);
+        });
     },
 
     onBtnEnterRoom(){
+        this.inputLayer.active = false;
+        let rid = parseInt(this.editBox.string);
+        cc.log("join rid:" + rid);
+        Global.netProxy.enterRoom(rid, (resp)=>{
+            Global.gameMgr.onEnterRoom(resp);
+        });
+    },
 
+    onBtnInput(){
+        this.inputLayer.active = true;
     }
     // update (dt) {},
 });

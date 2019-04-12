@@ -14,7 +14,6 @@ let game_instance = null;
 class Game {
     constructor(){
         this.usersOlMap = new Map();    // 记录在线的玩家
-        this.userRoomMap = new Map();   // 记录玩家所在的房间
     }
 
     static getInstance(){
@@ -161,7 +160,7 @@ class Game {
         resp.seq = request.seq;
 
         resp.rid = aRoom.rid;
-        resp.users.push(user);
+        resp.user = user;
 
         let respStr = JSON.stringify(resp, function(k, v){
             // socket属性必须过滤，含有方法无法字符串化
@@ -186,11 +185,13 @@ class Game {
 
         let ret = roomMgr.addUserToRoom(user, rid);
         if (!ret ){
-            console.log("room " + rid + " 不存在.");
+            console.log("room " + rid + " 不存在或者此时不能加入.");
             resp.err = 1;
+            resp.msg = "room " + rid + " 不存在或者此时不能加入.";
         } else{
             let room = roomMgr.getRoom(rid);
             resp.users = resp.users.concat(room.getAllUsers());
+            resp.rid = rid;
         }
 
         let respStr = JSON.stringify(resp, function(k, v){

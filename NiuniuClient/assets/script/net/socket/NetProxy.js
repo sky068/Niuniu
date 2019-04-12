@@ -128,29 +128,6 @@ let NetProxy = cc.Class({
         this.network.sendRequest(req);
     },
 
-    // 开始随机匹配
-    randomMatch: function () {
-        let req = new GameProtocols.RandomMatchRequest();
-        let uid = playerData.uid;
-        req.uid = uid;
-        this.network.sendRequest(req);
-    },
-
-    playChess: function (msg) {
-        let req = new GameProtocols.PlayChessRequest();
-        let uid = playerData.uid;
-        req.uid = uid;
-        req.lastBedIndex = msg.lastBedIndex;
-        req.cid = msg.cid;
-        req.dest = msg.dest;
-        this.network.sendRequest(req);
-    },
-
-    selectChess: function (msg) {
-        let req = new GameProtocols.SelectChessRequest();
-        req.cid = msg.cid;
-        this.network.sendRequest(req);
-    },
 
     createRoom: function (cb) {
         let req = new GameProtocols.CreateRoomRequest();
@@ -158,11 +135,11 @@ let NetProxy = cc.Class({
         this.network.sendRequest(req, cb);
     },
 
-    joinRoom: function (rid) {
-        let req = new GameProtocols.JoinRoomRequest();
+    enterRoom: function (rid, cb) {
+        let req = new GameProtocols.EnterRoomRequest();
         req.rid = rid;
         req.uid = playerData.uid;
-        this.network.sendRequest(req);
+        this.network.sendRequest(req, cb);
     },
 
     /**
@@ -177,7 +154,7 @@ let NetProxy = cc.Class({
         req.os = cc.sys.os;
         req.osVersion = cc.sys.osVersion;
 
-        let uid = DataMgr.getInstance().playerObj.uid;
+        let uid = playerData.uid;
         req.uid = uid;
         // req.language = cc.sys.language;//farm.FarmPlatformHelper.jsToOc(farm.FarmPlatformHelper.JSB_EVENT_JTO_GetCurrentLanguage);
         /*

@@ -25,6 +25,12 @@ let BaseProtocol = cc.Class({
         this.err = 0;
 
         /**
+         * 错误信息
+         * @type {string}
+         */
+        this.msg = "";
+
+        /**
          * 是否需要等待服务器回调
          */
         this.is_async = false;
@@ -80,26 +86,7 @@ let HeartResponse = cc.Class({
         this.t = 0;
     }
 });
-//-------------------------------------------------------
-let RandomMatchRequest = cc.Class({
-    extends: BaseRequest,
-    ctor(){
-        this.act = "rmatch";
-        this.uid = 0;
-    }
-});
 
-let RandomMatchResponse = cc.Class({
-    extends: BaseResponse,
-    ctor(){
-        this.act = "rmatch";
-        this.rid = 0;       // 房间id
-        this.black = 0;     // 黑子uid
-        this.other = 0;     // 对手uid
-        this.order = 0;     // 走棋uid
-    }
-});
-//-------------------------------------------------------
 let CreateRoomRequest = cc.Class({
     extends: BaseRequest,
     ctor(){
@@ -113,49 +100,30 @@ let CreateRoomResponse = cc.Class({
     ctor(){
         this.act = "createRoom";
         this.rid = 0;
-        this.users = [];
+        this.user = null;
     }
 });
 //-------------------------------------------------------
 let EnterRoomRequest = cc.Class({
-    extends: BaseRequest,
+    extends: CreateRoomResponse,
     ctor(){
         this.act = "enterRoom";
-        this.rid = 0;
-        this.uid = 0;
     }
 });
-//-------------------------------------------------------
-let PlayChessRequest = cc.Class({
-    extends: BaseRequest,
-    ctor(){
-        this.act = "playChess";
-        this.cid = 0;       // 棋子id (用来查找棋子)
-        this.lastBedIndex = 0; // 最新的位置索引 (用来查找位置)
-        this.dest =  {
-            index: 0,
-            x: 0,
-            y: 0
-        };
-
-    }
-});
-
-let PushPlayChess = cc.Class({
+let EnterRoomResponse = cc.Class({
     extends: BaseResponse,
     ctor(){
-        this.order = 0;         // 返回下一个走棋的uid
-        this.act = "playChess";
-        this.uid = 0;
-        this.cid = 0;
-        this.winner = 0;           // 赢家uid
-        this.dest = {
-            index: 0,
-            x: 0,
-            y: 0
-        }
+        this.rid = 0;
+        this.users = null;
     }
 });
+let PushEnterRoom = cc.Class({
+    extends: BaseResponse,
+    ctor(){
+        this.user = null;
+    }
+});
+
 //-------------------------------------------------------
 let ChatRequest = cc.Class({
     extends: BaseRequest,
@@ -174,22 +142,7 @@ let PushChat = cc.Class({
         this.uid = '';
     }
 });
-//-------------------------------------------------------
-let SelectChessRequest = cc.Class({
-    extends: BaseRequest,
-    ctor() {
-        this.act = "selectChess";
-        this.cid = 0;
-    }
-});
 
-let PushSelectChess = cc.Class({
-    extends: BaseResponse,
-    ctor() {
-        this.act = "selectChess";
-        this.cid = 0;
-    }
-});
 //-------------------------------------------------------
 let LoginRequest = cc.Class({
     extends: BaseRequest,
@@ -382,60 +335,10 @@ let PushExitRoom = cc.Class({
 
         this.act = 'exitRoom';
 
-        this.uid = 0;   // 退出玩家的uid
+        this.user = null;
     }
 });
-//-------------------------------------------------------
-/**
- * 推送消息 推送消息好友已赠送体力
- * @extends BaseResponse
- */
-var PushSendSpResponse = cc.Class({
-    extends: BaseResponse,
 
-    ctor: function () {
-        this.act = 'sendSpNotify';
-
-        /**
-         * 好友对象
-         */
-        this.friend = null;
-    }
-});
-//-------------------------------------------------------
-/**
- * 推送消息 推送消息好友已领取赠送的体力
- * @extends BaseResponse
- */
-let PushTakeSpResponse = cc.Class({
-    extends: BaseResponse,
-
-    ctor: function () {
-        this.act = 'takeSpNotify';
-
-        /**
-         * 好友对象
-         */
-        this.friend = null;
-    }
-});
-//-------------------------------------------------------
-/**
- * 推送消息 同步好友信息
- * @extends BaseResponse
- */
-let PushSyncFriendInfo = cc.Class({
-    extends: BaseResponse,
-
-    ctor: function () {
-        this.act = 'friendInfoSync';
-
-        /**
-         * 好友
-         */
-        this.friend = null;
-    }
-});
 //-------------------------------------------------------
 /**
  * debug回调
@@ -511,19 +414,14 @@ let response_classes = {
     login: LoginResponse,
     logout: LogoutResponse,
     bindFb: BindFacebookResponse,
-    rankboard: RankResponse,
     heart: HeartResponse,
-    rmatch: RandomMatchResponse,
     createRoom: CreateRoomResponse,
+    enterRoom: EnterRoomResponse,
 
     //push
+    pEnterRoom: PushEnterRoom,
+    pExitRoom: PushExitRoom,
     chat: PushChat,
-    exitRoom: PushExitRoom,
-    playChess: PushPlayChess,
-    selectChess: PushSelectChess,
-    sendSpNotify: PushSendSpResponse,
-    takeSpNotify: PushTakeSpResponse,
-    friendInfoSync: PushSyncFriendInfo,
 
     // debug
     cmdTest: DebugChangeMeResponse,
@@ -541,25 +439,19 @@ module.exports = {
     HeartRequest: HeartRequest,
     HeartResponse: HeartResponse,
     ChatRequest: ChatRequest,
-    RandomMatchRequest: RandomMatchRequest,
-    RandomMatchResponse: RandomMatchResponse,
-    PlayChessRequest: PlayChessRequest,
-    SelectChessRequest: SelectChessRequest,
     CreateRoomRequest: CreateRoomRequest,
     CreateRoomResponse: CreateRoomResponse,
     EnterRoomRequest:EnterRoomRequest,
+    EnterRoomResponse:EnterRoomResponse,
 
     // debug
     DebugChangeMeRequest: DebugChangeMeRequest,
     DebugChangeMeResponse: DebugChangeMeResponse,
 
     //push消息
-    PushChat: PushChat,
+    PushEnterRoom: PushEnterRoom,
     PushExitRoom: PushExitRoom,
-    PushPlayChess: PushPlayChess,
-    PushSendSpResponse: PushSendSpResponse,
-    PushTakeSpResponse: PushTakeSpResponse,
-    PushSyncFriendInfo: PushSyncFriendInfo,
+    PushChat: PushChat,
 
     response_classes: response_classes
 };

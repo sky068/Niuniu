@@ -10,9 +10,21 @@ class Room {
     constructor(rid){
         this.usersDic = new Map();
         this.rid = rid;
+
+        this.rstat = 0; //房间状态 0等待，1准备，2游戏中
+
+        this._seatOrder = 0;
+        this._offlineOrder = [];
     }
 
     addUser(user){
+        if (this._offlineOrder.length > 0){
+            user.seatOrder = this._offlineOrder.shift();
+        } else{
+            user.seatOrder = this._seatOrder;
+            this._seatOrder ++;
+        }
+
         this.usersDic.set(user.uid, user);
         let resp = new Protocol.PushEnterRoom(user);
         this.sendObj(resp, user.uid);
@@ -24,6 +36,8 @@ class Room {
         if (!this.usersDic.has(uid)){
             return;
         }
+
+        this._offlineOrder.push(this.usersDic.get(uid).seatOrder);
 
         if (this.usersDic.size <= 1){
             console.log("room " + this.rid + " 没有玩家了，可以销毁.");
@@ -37,12 +51,24 @@ class Room {
         }
     }
 
-    getAllUsers(){
-        let ret = [];
+    /**
+     * 按照座次排序（给客户端用来确定座位显示）
+     */
+    getAllUsers(isSort){
+        let users = [];
         this.usersDic.forEach((v,k,m)=>{
-            ret.push(v);
+            users.push(v);
         });
-        return ret;
+
+        users.sort((a,b)=>{
+            return a.seatOrder - b.seatOrder;
+        });
+    
+        return users;
+    }
+
+    getUsersSize(){
+        return this.usersDic.size;
     }
 
     /**
@@ -52,10 +78,7 @@ class Room {
      */
     send(msg, exceptUid){
         this.usersDic.forEach((v,k,m)=>{
-            if (v.uid == exceptUid){
-                return;
-            }
-            if (v.socket.readyState == SOCKET_OPEN){
+            if (v.uid != exceptUid && v.socket.readyState == SOCKET_OPEN){
                 v.socket.send(msg);
             }
         });

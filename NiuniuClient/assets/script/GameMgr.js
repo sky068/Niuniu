@@ -18,9 +18,6 @@ cc.Class({
 
     start(){
         this.listenEvent();
-        Global.netProxy.registerPush("rmatch", this.onRandomMathSuc.bind(this));
-        // 连接网络
-        Global.netProxy.connect();
     },
 
     listenEvent(){
@@ -55,8 +52,6 @@ cc.Class({
             dataMgr.playerObj.parse(resp);
             dataMgr.saveDataToLocal();
         }
-
-        Global.loadScene("Lobby");
     },
 
     onLoginFailed(event){
@@ -64,15 +59,6 @@ cc.Class({
         this.scheduleOnce((dt)=>{
             Global.netProxy.login(0);
         }, 5)
-    },
-
-    onRandomMathSuc(resp){
-        if (resp.err != 0){
-            Global.tips.show("匹配失败，请稍后再试.");
-        } else {
-            this.getComponent("GameCtrl").startNewGame(resp);
-            // this.showGameLayer();
-        }
     },
 
     startBeatHeart(){
@@ -89,4 +75,26 @@ cc.Class({
     checkInternet(){
         return Global.netProxy.isNetworkOpened();
     },
+
+    onOpenRoom(resp){
+        if (resp.err > 0){
+            Toast.showText("开房失败.", 2);
+            return;
+        }
+        Global.loadScene("RoomNet");
+        this.scheduleOnce(()=>{
+            Global.eventMgr.emit(Global.config.EVENT_OPEN_ROOM, resp);
+        }, 0.1);
+    },
+
+    onEnterRoom(resp){
+        if (resp.err > 0){
+            Toast.showText("加入失败，请检查房间号.", 2);
+            return;
+        }
+        Global.loadScene("RoomNet");
+        this.scheduleOnce(()=>{
+            Global.eventMgr.emit(Global.config.EVENT_ENTER_ROOM, resp);
+        }, 0.1);
+    }
 });

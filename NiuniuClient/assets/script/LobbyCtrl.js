@@ -12,21 +12,8 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        scrollView: cc.Node,
+        menu: cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -36,6 +23,16 @@ cc.Class({
     start () {
         Global.audioMgr.playMusic(Global.audioMgr.roomMusic);
     },
+
+    onBtnOffline(){
+        cc.log("单机模式.");
+        this.scrollView.active = true;
+        this.menu.active = false;
+    },
+
+    onBtnRoom(){
+        Global.loadScene("Menu");
+    }
 
     // update (dt) {},
 });

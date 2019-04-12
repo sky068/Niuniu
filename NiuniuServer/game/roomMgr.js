@@ -82,7 +82,7 @@ class RoomMgr{
 
         let ret = false;
         let room = this.getRoom(rid);
-        if (room){
+        if (room && room.getUsersSize() < 5 && room.rstat < 1){
             room.addUser(user);
             this.userRoomMap.set(user.uid, room);
             ret = true;

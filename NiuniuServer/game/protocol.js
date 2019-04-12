@@ -19,6 +19,11 @@ class BaseProtocol{
         this.err = 0;
 
         /**
+         * 错误信息
+         */
+        this.msg = "";
+
+        /**
          * 是否需要等待服务器回调
          */
         this.is_async = false;
@@ -86,13 +91,15 @@ class CreateRoomResponse extends BaseResponse{
     constructor(){
         super();
         this.rid = 0;
-        this.users = [];
+        this.user = null;
     }
 }
 
 class EnterRoomResponse extends CreateRoomResponse{
     constructor(){
         super();
+        this.rid = 0;
+        this.users = [];
     }
 }
 
@@ -100,7 +107,6 @@ class PushEnterRoom extends BaseResponse{
     constructor(user){
         super();
         this.act = "pEnterRoom";
-        this.seq = 1;
         this.user = user;
     }
 }
@@ -109,7 +115,6 @@ class PushExitRoom extends BaseResponse{
     constructor(user){
         super();
         this.act = "pExitRoom";
-        this.seq = 1;
         this.user = user;
     }
 }

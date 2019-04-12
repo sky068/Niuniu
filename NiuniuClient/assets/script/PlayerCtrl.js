@@ -98,6 +98,7 @@ cc.Class({
         this.coins = data.coins;
         // todo: 头像暂时不更新
         this.uid =data.uid;
+        this.isBanker = data.isBanker;
     },
 
     onBtnDown(send, data){

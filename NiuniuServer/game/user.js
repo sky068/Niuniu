@@ -3,10 +3,11 @@ class User{
         this.socket = socket;
 
         this.uid = uid;
-        this.nickName = name;
+        this.nickname = name;
         this.avatar = icon;
         this.coins = coins;
         this.isBanker = false;
+        this.seatOrder = 0;  // 真实座次
     }
 }
 
