@@ -1,7 +1,8 @@
 /**
  * Created by skyxu on 2019/3/20.
- *  在cocoscreator里导入为插件使用
- *  插件不支持es6，注意需要按照es5规则写
+ *
+ * 需要在cocoscreator里导入为插件使用
+ * 插件不支持es6，注意需要按照es5规则写
  */
 "use strict";
 
@@ -123,40 +124,19 @@ function getHandsType(cardsArr) {
     var realTotalPoint = 0;
     var bigJ = true;
     var big10 = true;
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
 
-    try {
-        for (var _iterator = cardsArr[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var card = _step.value;
-            totalPoint += card.point <= 10 ? card.point : 10;
-            realTotalPoint += card.point;
-
-            if (card.point < 11) {
-                bigJ = false;
-            }
-
-            if (card.point < 10) {
-                big10 = false;
-            }
-        } // 判断牌型、顺序不能变、依次从大到小判断5小牛、5花牛、炸弹、银牛、牛牛、有牛、没牛
-
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
+    cardsArr.forEach((card)=>{
+        totalPoint += card.point <= 10 ? card.point : 10;
+        realTotalPoint += card.point;
+        if (card.point < 11){
+            bigJ = false;
         }
-    }
+        if (card.point < 10){
+            big10 = false;
+        }
+    });
 
+    // 判断牌型,判断顺序不能变,依次从大到小判断5小牛、5花牛、炸弹、银牛、牛牛、有牛、没牛
     if (totalPoint <= 10) {
         console.log("五小牛");
         return new TypeReturn(HandsType.TYPE_FIVES, cardsArr[0], cardsArr, []);
