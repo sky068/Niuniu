@@ -42,6 +42,7 @@ cc.Class({
         cardPanelRight: cc.Node,
         cardPanelNode: cc.Node,
         menuNode: cc.Node,
+        readyNode: cc.Node,
 
         bankerSp: cc.Node,
         isBanker: {
@@ -56,6 +57,13 @@ cc.Class({
             default: false,
             notify(){
                 this.menuNode.active = this.showMenu;
+            }
+        },
+
+        showReady:{
+            default: true,
+            notify(){
+                this.readyNode.active = this.showReady;
             }
         },
 
@@ -130,6 +138,10 @@ cc.Class({
         this.payBet(downNum);
     },
 
+    onBtnReady(){
+        cc.log("ready.");
+    },
+
     // 清空手牌
     clearHands(){
         this.cardPanelLeft.removeAllChildren();
@@ -141,6 +153,7 @@ cc.Class({
         this.payBet(0);
         this.isBanker = false;
         this.showMenu = false;
+        this.showReady = false;
         this.cowLabel.node.active = false;
         this.rewardLabel.node.active = false;
         this.typeReturn = null;
