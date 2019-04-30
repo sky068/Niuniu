@@ -42,7 +42,7 @@ cc.Class({
         cardPanelRight: cc.Node,
         cardPanelNode: cc.Node,
         menuNode: cc.Node,
-        readyNode: cc.Node,
+        startNode: cc.Node,
 
         bankerSp: cc.Node,
         isBanker: {
@@ -60,10 +60,10 @@ cc.Class({
             }
         },
 
-        showReady:{
+        showStart:{
             default: true,
             notify(){
-                this.readyNode.active = this.showReady;
+                this.startNode.active = this.showStart;
             }
         },
 
@@ -138,8 +138,8 @@ cc.Class({
         this.payBet(downNum);
     },
 
-    onBtnReady(){
-        cc.log("ready.");
+    onBtnStart(){
+        cc.log("start.");
     },
 
     // 清空手牌
@@ -153,7 +153,7 @@ cc.Class({
         this.payBet(0);
         this.isBanker = false;
         this.showMenu = false;
-        this.showReady = false;
+        this.showStart = false;
         this.cowLabel.node.active = false;
         this.rewardLabel.node.active = false;
         this.typeReturn = null;

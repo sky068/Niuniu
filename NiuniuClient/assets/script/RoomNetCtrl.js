@@ -168,7 +168,7 @@ cc.Class({
     },
 
     /**
-     *
+     * 通过座位号获取对应玩家节点
      * @param seatIndex
      * @return {cc.Node}
      */

@@ -454,7 +454,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 15
@@ -5414,7 +5414,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 171
@@ -5692,7 +5692,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "btnReady",
+    "_name": "btnStart",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -5821,7 +5821,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "准备",
+    "_N$string": "开始",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -5938,7 +5938,7 @@
       "__id__": 1
     },
     "component": "PlayerCtrl",
-    "handler": "onBtnReady",
+    "handler": "onBtnStart",
     "customEventData": ""
   },
   {
@@ -5984,7 +5984,7 @@
     "menuNode": {
       "__id__": 135
     },
-    "readyNode": {
+    "startNode": {
       "__id__": 180
     },
     "bankerSp": {
@@ -6005,9 +6005,9 @@
     "_N$uid": 123456,
     "_N$nickName": "Mark",
     "_N$coins": 999999,
-    "_N$isBanker": false,
+    "_N$isBanker": true,
     "_N$showMenu": true,
-    "_N$showReady": true
+    "_N$showStart": true
   },
   {
     "__type__": "cc.Animation",
