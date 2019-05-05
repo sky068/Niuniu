@@ -12,4 +12,19 @@ MyUtils.rm1ElementFromArr = function(arr, ele){
     }
 };
 
+/**
+ * 将对象转成字符串，过滤'_'开头的字段
+ * @param {Object} obj
+ * @returns {String}
+ */
+MyUtils.stringify = function(obj){
+    return JSON.stringify(obj, (k, v)=>{
+        if (k.indexOf("_") == 0){
+            return undefined;
+        } else{
+            return v;
+        }
+    })
+};
+
 module.exports = MyUtils;

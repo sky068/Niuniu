@@ -9,6 +9,7 @@ let User = require("./user");
 let roomMgr = require("./roomMgr").getInstance();
 let Protocol = require("./protocol");
 let {query} = require("./../db/asyncDb");
+let myUtils = require("./myUtils");
 
 let game_instance = null;
 class Game {
@@ -31,7 +32,7 @@ class Game {
                 resp.act = request.act;
                 resp.seq = request.seq;
                 resp.t = Date.now();
-                socket.send(JSON.stringify(resp));
+                socket.send(myUtils.stringify(resp));
                 break;
             }
             case 'chat': {
@@ -44,8 +45,8 @@ class Game {
                 Game.getInstance().randomMatch(socket, request);
                 break;
             }
-            case 'playChess': {
-                Game.getInstance().playChess(socket, request);
+            case 'startGame': {
+                Game.getInstance().startGame(socket, request);
                 break;
             }
             case 'login': {
@@ -103,7 +104,7 @@ class Game {
 
         if (!dataList || dataList.length <= 0){
             resp.err = 1;
-            socket.send(JSON.stringify(resp));
+            socket.send(myUtils.stringify(resp));
         } else{
             let info = dataList[0];
             resp.uid = info.uid;
@@ -111,7 +112,7 @@ class Game {
             resp.coins = info.coins;
             resp.avatar = info.avatar;
             resp.nickname = info.nickname;
-            let respStr = JSON.stringify(resp);
+            let respStr = myUtils.stringify(resp);
             console.log("login suc, userInfo = " + respStr);
 
             let user = new User(socket,info.uid, info.nickname, info.avatar, info.coins);
@@ -162,14 +163,7 @@ class Game {
         resp.rid = aRoom.rid;
         resp.user = user;
 
-        let respStr = JSON.stringify(resp, function(k, v){
-            // socket属性必须过滤，含有方法无法字符串化
-            if (k == "socket"){
-                return undefined;
-            } else{
-                return v;
-            }
-        });
+        let respStr = myUtils.stringify(resp);
         aRoom.send(respStr);
         console.log("creat room suc, rid = " + aRoom.rid);
     }
@@ -194,14 +188,16 @@ class Game {
             resp.rid = rid;
         }
 
-        let respStr = JSON.stringify(resp, function(k, v){
-            if (k == "socket"){
-                return undefined;
-            } else{
-                return v;
-            }
-        });
+        let respStr = myUtils.stringify(resp);
         socket.send(respStr);
+    }
+
+    startGame(socket, request){
+        let uid = request.uid;
+        let room = roomMgr.getRoomOfUser(uid);
+        if (room){
+            room.startGame();
+        }
     }
     
 }

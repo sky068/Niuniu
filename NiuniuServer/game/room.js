@@ -5,16 +5,24 @@ const SOCKET_CLOSED = 3;
 
 let Protocol = require('./protocol');
 let myUtils = require("./myUtils");
+let pokerUtils = require("./pokerUtils");
+
+const RoomStatus = {
+    READY: 0,
+    GAMING: 1,
+}
 
 class Room {
     constructor(rid){
         this.usersDic = new Map();
         this.rid = rid;
 
-        this.rstat = 0; //房间状态 0等待，1准备，2游戏中
+        this.rstat = 0; //房间状态 0准备，1游戏中
 
         this._seatOrder = 0;
         this._offlineOrder = [];
+
+        this.cards = pokerUtils.create1pairPoker(true);    // 一副牌
     }
 
     addUser(user){
@@ -78,8 +86,8 @@ class Room {
      */
     send(msg, exceptUid){
         this.usersDic.forEach((v,k,m)=>{
-            if (v.uid != exceptUid && v.socket.readyState == SOCKET_OPEN){
-                v.socket.send(msg);
+            if (v.uid != exceptUid && v._socket.readyState == SOCKET_OPEN){
+                v._socket.send(msg);
             }
         });
     }
@@ -90,15 +98,8 @@ class Room {
      * @param {Number} exceptUid 排除的玩家
      */
     sendObj(obj, exceptUid){
-        let str = JSON.stringify(obj, function(k, v){
-            // socket属性必须过滤，含有方法无法字符串化
-            if (k == "socket"){
-                return undefined;
-            } else{
-                return v;
-            }
-        });
-
+        // socket属性必须过滤，含有方法无法字符串化
+        let str = myUtils.stringify(obj);
         this.send(str, exceptUid);
     }
 
@@ -108,6 +109,14 @@ class Room {
             user = this.usersDic.get(uid);
         }
         return user;
+    }
+
+    startGame(){
+        this.rstat = RoomStatus.GAMING;
+        // 发牌，每个人只知道自己的牌，防止抓包拿到别人的牌
+        // todo: 先发三张，等待下注，然后发两张后开牌
+
+        // let req = new Protocol.PushDeal();
     }
 
 }

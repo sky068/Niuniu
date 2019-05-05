@@ -119,6 +119,13 @@ class PushExitRoom extends BaseResponse{
     }
 }
 
+class PushDeal extends BaseResponse {
+    constructor(cards){
+        super();
+        this.act = "pDeal";
+        this.cards = cards;
+    }
+}
 
 module.exports = {
     HeartResponse: HeartResponse,
@@ -127,4 +134,5 @@ module.exports = {
     EnterRoomResponse: EnterRoomResponse,
     PushExitRoom: PushExitRoom,
     PushEnterRoom: PushEnterRoom,
+    PushDeal: PushDeal,
 }
