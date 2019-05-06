@@ -10,6 +10,8 @@ class User{
         this.isBanker = false;
         this.seatOrder = 0;  // 真实座次
         this._cards = [];    // 手牌
+        this._bet = 0;       // 下注
+        this._reward = 0;    // 本局赢钱
     }
 }
 

@@ -140,6 +140,8 @@ cc.Class({
 
     onBtnStart(){
         cc.log("start.");
+        Global.netProxy.startGame();
+        this.showStart = false;
     },
 
     // 清空手牌
@@ -150,13 +152,15 @@ cc.Class({
         this.cardPanelRight.width = 0;
         this.hands = [];
 
-        this.payBet(0);
         this.isBanker = false;
         this.showMenu = false;
         this.showStart = false;
         this.cowLabel.node.active = false;
         this.rewardLabel.node.active = false;
         this.typeReturn = null;
+
+        this.curBets = 0;
+        this.betLabel.string = "下注:" + 0;
     },
 
     /**
@@ -185,7 +189,16 @@ cc.Class({
 
             this.curBets = bet;
             this.betLabel.string = "下注:" + bet;
+
+            if (Global.config.ONLINE_MODE){
+                Global.netProxy.payBet(bet);
+            }
         }, delay != undefined ? delay : 0);
+    },
+
+    showBet(bet){
+        this.curBets = bet;
+        this.betLabel.string = "下注:" + bet;
     },
 
     /**

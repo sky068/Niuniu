@@ -41,8 +41,8 @@ class Game {
                 }
                 break;
             }
-            case 'rmatch': {
-                Game.getInstance().randomMatch(socket, request);
+            case 'payBet': {
+                Game.getInstance().payBet(socket, request);
                 break;
             }
             case 'startGame': {
@@ -197,6 +197,15 @@ class Game {
         let room = roomMgr.getRoomOfUser(uid);
         if (room){
             room.startGame();
+        }
+    }
+
+    payBet(socket, request){
+        let uid = request.uid;
+        let bet = request.bet;
+        let room = roomMgr.getRoomOfUser(uid);
+        if (room){
+            room.payBet(uid,bet);
         }
     }
     

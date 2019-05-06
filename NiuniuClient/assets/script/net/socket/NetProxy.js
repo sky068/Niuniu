@@ -142,6 +142,19 @@ let NetProxy = cc.Class({
         this.network.sendRequest(req, cb);
     },
 
+    startGame: function () {
+        let req = new GameProtocols.StartGameRequest();
+        req.uid = playerData.uid;
+        this.network.sendRequest(req);
+    },
+
+    payBet: function (bet) {
+        let req = new GameProtocols.BetRequest();
+        req.uid = playerData.uid;
+        req.bet = bet;
+        this.network.sendRequest(req);
+    },
+
     /**
      * Facebook或者游客登录接口
      * @param {Object.<LoginOriginType>} origin

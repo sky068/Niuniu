@@ -36,7 +36,7 @@ cc.Class({
         this.listenEvent();
 
         this.seatOrder = 0;  // 我的真实座次
-        this.inRoomUserMap = new Map();
+        this.inRoomUserMap = new Map(); // 存储玩家在牌桌上的座位号
     },
 
     start () {
@@ -44,12 +44,17 @@ cc.Class({
         this.initGame();
         // this.startGame();
 
-        Global.audioMgr.playMusic(Global.audioMgr.gameMusic);
+        // Global.audioMgr.playMusic(Global.audioMgr.gameMusic);
     },
 
     listenEvent(){
         Global.netProxy.registerPush("pEnterRoom", this.onOtherUserEnterRoom, this);
         Global.netProxy.registerPush("pExitRoom", this.onOtherUserExitRoom, this);
+        Global.netProxy.registerPush("pDeal", this.onPushDeal, this);
+        Global.netProxy.registerPush("pBet", this.onPushUserBet, this);
+        Global.netProxy.registerPush("pStartBet", this.onPushStartBet, this);
+        Global.netProxy.registerPush("pShowCards", this.onPushShowCards, this);
+
 
         Global.eventMgr.on(Global.config.EVENT_OPEN_ROOM, this.onOpenRoom.bind(this));
         Global.eventMgr.on(Global.config.EVENT_ENTER_ROOM, this.onEnterRoom.bind(this));
@@ -68,9 +73,13 @@ cc.Class({
         // 默认房主是庄家
         this.bankerSeat = 2;
 
+        this.selfNodeCtrl.showStart = true;
+
         this.seatOrder = user.seatOrder;
 
         this.inRoomUserMap.set(user.uid, 2);
+
+        cc.log("开房成功.");
     },
 
     onEnterRoom(event){
@@ -80,7 +89,7 @@ cc.Class({
 
         for (let i=0; i<data.users.length; i++){
             let userObj = data.users[i];
-            let seat = this.__getUserSeat(userObj.seatOrder);
+            let seat = this.__getUserShowSeat(userObj.seatOrder);
 
             this.seats[seat].active = true;
             let userNodeCtrl = this.getPlayerNode(seat).getComponent("PlayerCtrl");
@@ -107,7 +116,7 @@ cc.Class({
      * @return {Number}
      * @private
      */
-    __getUserSeat(seatOrder){
+    __getUserShowSeat(seatOrder){
         let delta = 2 - this.seatOrder;
         let seat = seatOrder + delta;
         seat = seat >= 0 ? seat : (seat + 5);
@@ -118,7 +127,7 @@ cc.Class({
     // 有其他玩家加入游戏
     onOtherUserEnterRoom(resp){
         let user = resp.user;
-        let seat = this.__getUserSeat(user.seatOrder);
+        let seat = this.__getUserShowSeat(user.seatOrder);
 
         let userNodeCtrl = this.getPlayerNode(seat).getComponent("PlayerCtrl");
         this.seats[seat].active = true;
@@ -131,6 +140,45 @@ cc.Class({
         let seat = this.inRoomUserMap.get(user.uid);
         this.seats[seat].active = false;
         this.inRoomUserMap.delete(user.uid);
+    },
+
+    // 发牌
+    onPushDeal(resp){
+        // todo: resp里只有自己的牌，其他玩家的牌只做动画
+        let cards = resp.cards;
+        cc.log("cards:" + JSON.stringify(cards));
+        this._serverCards = cards;
+        this.startDeal(cards.length, null);
+    },
+
+    onPushUserBet(resp){
+        let bet = Number(resp.bet);
+        let uid = resp.uid;
+        let playCtrl = this.getPlayerNode(this.inRoomUserMap.get(uid)).getComponent("PlayerCtrl");
+        playCtrl.showBet(bet);
+    },
+
+    onPushStartBet(resp){
+        let expired = resp.expired;
+        this.startBets = true;
+        this.betsTime = Number(expired);
+        if (!this.selfNodeCtrl.isBanker){
+            this.selfNodeCtrl.showMenu = true;
+        }
+    },
+
+    onPushShowCards(resp){
+        this.startBets = false;
+
+        let users = resp.users;
+        for (let u of users){
+            if (u.uid != playerObj.uid){
+                let playerCtrl = this.getPlayerNode(this.inRoomUserMap.get(u.uid)).getComponent("PlayerCtrl");
+                playerCtrl.hands = u.cards
+            }
+        }
+
+        this.openHands();
     },
 
     initGame(){
@@ -147,11 +195,17 @@ cc.Class({
         let order = [];
         let tmp = this.bankerSeat;
         while (tmp <= 4){
-            order.push(tmp++);
+            if (this.seats[tmp].active){
+                order.push(tmp);
+            }
+            tmp++;
         }
         tmp = 0;
         while (tmp < this.bankerSeat){
-            order.push(tmp++);
+            if (this.seats[tmp].active){
+                order.push(tmp);
+            }
+            tmp++;
         }
 
         return order;
@@ -235,7 +289,7 @@ cc.Class({
     },
 
     /**
-     * 开发发牌
+     * 开始发牌
      * @param count{Number} 发牌张数
      * @param cb{function} 回调函数
      */
@@ -248,6 +302,7 @@ cc.Class({
             let root = self.cardHeapSeat.parent;
             let order = this.getDealSeatOrder();
 
+            // 只有自己的牌是服务器发来的，其他玩家的只是动画
             if (this.cardsArr.length < count * 5){
                 cc.log("牌不够，洗牌.");
                 this.cardsArr = create1pairPoker(true);
@@ -263,6 +318,10 @@ cc.Class({
             // 执行发牌并展示动画
             function _dealAct(seat, cards) {
                 let playerCtrl = self.getPlayerNode(seat).getComponent("PlayerCtrl");
+                if (seat == 2){
+                    // 自己的座位肯定是2
+                    cards = self._serverCards;
+                }
                 for (let i=0; i<cards.length; i++){
                     let cardObj = cards[i];
                     playerCtrl.hands.push(cardObj); // 发牌给玩家
@@ -289,7 +348,9 @@ cc.Class({
             }
         }
 
-        this.scheduleOnce(cb, t + 0.5);
+        if (cb){
+            this.scheduleOnce(cb, t + 0.5);
+        }
     },
 
     // 开牌比较大小
@@ -361,57 +422,41 @@ cc.Class({
         Global.dataMgr.saveDataToLocal();
 
         this.scheduleOnce(()=>{
-            // 开始下一局
-            Dialog.show("继续玩？", "取消", "确定", ()=>{
-                Global.loadScene("Lobby");
-            }, ()=>{
+            if (Global.config.ONLINE_MODE){
+                let isBanker = this.selfNodeCtrl.isBanker;
                 this.cleanGame();
-                this.bankerSeat = this.nextBankerSeat;
-                this.startGame();
-            });
+                this.selfNodeCtrl.isBanker = isBanker;
+                if (this.selfNodeCtrl.isBanker){
+                    this.selfNodeCtrl.showStart = true;
+                }
+            } else {
+                // 开始下一局
+                Dialog.show("继续玩？", "取消", "确定", ()=>{
+                    Global.loadScene("Lobby");
+                }, ()=>{
+                    this.cleanGame();
+                    this.bankerSeat = this.nextBankerSeat;
+                    this.startGame();
+                });
+            }
         }, 1.5);
     },
 
     myUpdate (dt) {
         if (!this.startBets){
+            this.betTimeLabel.node.parent.active = false;
             return;
         }
 
-        this.betTimeLabel.string = Math.ceil(this.betsTime);
-        this.betsTime -= dt;
-        if (this.betsTime > 0){
+        this.betTimeLabel.string = Math.ceil((this.betsTime - Date.now())/1000);
+        if (Math.ceil(this.betsTime - Date.now()) > 0){
             this.betTimeLabel.node.parent.active = true;
-            let allOk = true;
-            for(let seat of this.seats){
-                let player = seat.getChildByName("PlayerNode").getComponent("PlayerCtrl");
-                if(player.curBets <= 0 && !player.isBanker){
-                    allOk = false;
-                }
-            }
-            if (allOk){
-                // 都下好注开始发牌
-                this.startBets = false;
-            }
         } else {
-            // 超时自动下注最小bet, 按照顺序，逆时针开始
-            let orders = this.getDealSeatOrder();
-            for(let seat of orders){
-                let player = this.getPlayerNode(seat).getComponent("PlayerCtrl");
-                if(player.curBets <= 0){
-                    player.onBtnDown(null,1);    // 超时自动下注最小bet
-                    this.startBets = false;
-                    cc.log("超时自动下注.");
-                }
-            }
+            // 超时自动下注最小bet
+            this.startBets = false;
+            this.betTimeLabel.node.parent.active = false;
+            this.selfNodeCtrl.showMenu = false;
         }
 
-        // 已经下好注，开始发剩下的牌
-        if (!this.startBets){
-            this.betTimeLabel.node.parent.active = false;
-            let cardCounts = Global.config.GAME_MODE < 5 ? (5-Global.config.GAME_MODE) : Global.config.GAME_MODE;
-            this.startDeal(cardCounts, ()=>{
-                this.openHands();
-            });
-        }
     },
 });

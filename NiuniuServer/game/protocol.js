@@ -127,6 +127,32 @@ class PushDeal extends BaseResponse {
     }
 }
 
+// 下注推送
+class PushBet extends BaseResponse {
+    constructor(){
+        super();
+        this.act = "pBet";
+        this.bet = 0;
+        this.uid = 0;
+    }
+}
+
+class PushStartBet extends BaseResponse{
+    constructor(exp){
+        super();
+        this.act = "pStartBet";
+        this.expired = exp;
+    }
+}
+
+class PushShowCards extends BaseResponse{
+    constructor(){
+        super();
+        this.act = "pShowCards";
+        this.users = [];
+    }
+}
+
 module.exports = {
     HeartResponse: HeartResponse,
     LoginResponse: LoginResponse,
@@ -135,4 +161,7 @@ module.exports = {
     PushExitRoom: PushExitRoom,
     PushEnterRoom: PushEnterRoom,
     PushDeal: PushDeal,
+    PushStartBet: PushStartBet,
+    PushBet: PushBet,
+    PushShowCards: PushShowCards,
 }

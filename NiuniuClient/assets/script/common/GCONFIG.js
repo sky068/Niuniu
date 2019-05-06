@@ -21,6 +21,8 @@ GCONFIG.BIND_FB_COINS = 200;
 
 GCONFIG.SUBS_REWARD = 2000;
 
+GCONFIG.ONLINE_MODE = false;    // 房卡模式
+
 /*******************key start********************/
 GCONFIG.KEY_SETTING = "KEY_SETTING";
 GCONFIG.KEY_PLAYERDATA = "KEY_PLAYERDATA";

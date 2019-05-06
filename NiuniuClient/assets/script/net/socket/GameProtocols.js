@@ -125,6 +125,25 @@ let PushEnterRoom = cc.Class({
 });
 
 //-------------------------------------------------------
+let StartGameRequest = cc.Class({
+    extends: BaseRequest,
+    ctor(){
+        this.act = "startGame";
+        this.uid = "";
+    }
+});
+
+//-------------------------------------------------------
+let BetRequest = cc.Class({
+    extends: BaseRequest,
+    ctor(){
+        this.act = "payBet";
+        this.uid = 0;
+        this.bet = 0;
+    }
+});
+
+//-------------------------------------------------------
 let ChatRequest = cc.Class({
     extends: BaseRequest,
     ctor(){
@@ -140,6 +159,39 @@ let PushChat = cc.Class({
         this.act = 'chat';
         this.msg = '';
         this.uid = '';
+    }
+});
+
+let PushDeal = cc.Class({
+    extends: BaseResponse,
+    ctor(){
+        this.act = 'pDeal';
+        this.cards = [];
+    }
+});
+
+let PushBet = cc.Class({
+    extends: BaseResponse,
+    ctor(){
+        this.act = 'pBet';
+        this.bet = 0;
+        this.uid = 0;
+    }
+});
+
+let PushStartBet = cc.Class({
+    extends: BaseResponse,
+    ctor(){
+        this.act = "pStartBet";
+        this.expired = 0;
+    }
+});
+
+let PushShowCards = cc.Class({
+    extends: BaseResponse,
+    ctor(){
+        this.act = "pShowCards";
+        this.users = [];
     }
 });
 
@@ -417,10 +469,15 @@ let response_classes = {
     heart: HeartResponse,
     createRoom: CreateRoomResponse,
     enterRoom: EnterRoomResponse,
+    payBet: BetRequest,
 
     //push
     pEnterRoom: PushEnterRoom,
     pExitRoom: PushExitRoom,
+    pDeal: PushDeal,
+    pBet: PushBet,
+    pStartBet: PushStartBet,
+    pShowCards: PushShowCards,
     chat: PushChat,
 
     // debug
@@ -443,6 +500,8 @@ module.exports = {
     CreateRoomResponse: CreateRoomResponse,
     EnterRoomRequest:EnterRoomRequest,
     EnterRoomResponse:EnterRoomResponse,
+    StartGameRequest: StartGameRequest,
+    BetRequest: BetRequest,
 
     // debug
     DebugChangeMeRequest: DebugChangeMeRequest,
@@ -451,7 +510,11 @@ module.exports = {
     //push消息
     PushEnterRoom: PushEnterRoom,
     PushExitRoom: PushExitRoom,
+    PushDeal: PushDeal,
     PushChat: PushChat,
+    PushBet: PushBet,
+    PushStartBet: PushStartBet,
+    PushShowCards: PushShowCards,
 
     response_classes: response_classes
 };

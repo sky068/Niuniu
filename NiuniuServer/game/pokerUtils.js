@@ -44,6 +44,8 @@ function CardObj(p, s) {
     this.suit = s; // 牌面花色
 }
 
+PokerUtils.HandsType = HandsType;
+
 /**
  * 手牌类型返回对象
  * @param type{Number}      手牌类型
@@ -122,8 +124,8 @@ PokerUtils.sortBig2Samll = function(cardsArr) {
  */
 PokerUtils.getHandsType = function(cardsArr) {
     var len = cardsArr.length;
-    if (!cardsArr || len !== 5) return new TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
-    sortBig2Samll(cardsArr);
+    if (!cardsArr || len !== 5) return new PokerUtils.TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
+    PokerUtils.sortBig2Samll(cardsArr);
     var totalPoint = 0;
     var realTotalPoint = 0;
     var bigJ = true;
@@ -143,25 +145,25 @@ PokerUtils.getHandsType = function(cardsArr) {
     // 判断牌型,判断顺序不能变,依次从大到小判断5小牛、5花牛、炸弹、银牛、牛牛、有牛、没牛
     if (totalPoint <= 10) {
         console.log("五小牛");
-        return new TypeReturn(HandsType.TYPE_FIVES, cardsArr[0], cardsArr, []);
+        return new PokerUtils.TypeReturn(HandsType.TYPE_FIVES, cardsArr[0], cardsArr, []);
     }
 
     if (bigJ) {
         console.log("五花牛");
-        return new TypeReturn(HandsType.TYPE_FLOWER, cardsArr[0], cardsArr, []);
+        return new PokerUtils.TypeReturn(HandsType.TYPE_FLOWER, cardsArr[0], cardsArr, []);
     }
     // 牌型是4炸的话最大牌取炸弹牌,比如5555J取5,方便比较大小
     if (realTotalPoint - cardsArr[len - 1].point === cardsArr[0].point * 4) {
         console.log("炸弹");
-        return new TypeReturn(HandsType.TYPE_BOOM, cardsArr[0], cardsArr, []);
+        return new PokerUtils.TypeReturn(HandsType.TYPE_BOOM, cardsArr[0], cardsArr, []);
     } else if (realTotalPoint - cardsArr[0].point === cardsArr[len - 1].point * 4) {
         console.log("炸弹");
-        return new TypeReturn(HandsType.TYPE_BOOM, cardsArr[len - 1], cardsArr, []);
+        return new PokerUtils.TypeReturn(HandsType.TYPE_BOOM, cardsArr[len - 1], cardsArr, []);
     }
 
     if (big10) {
         console.log("银牛");
-        return new TypeReturn(HandsType.TYPE_SILVER, cardsArr[0], cardsArr, []);
+        return new PokerUtils.TypeReturn(HandsType.TYPE_SILVER, cardsArr[0], cardsArr, []);
     }
 
     var lave = totalPoint % 10;
@@ -186,17 +188,17 @@ PokerUtils.getHandsType = function(cardsArr) {
 
                 if (lave === 0) {
                     console.log("牛牛");
-                    return new TypeReturn(HandsType.TYPE_NIUNIU, cardsArr[0], cardsArr, []);
+                    return new PokerUtils.TypeReturn(HandsType.TYPE_NIUNIU, cardsArr[0], cardsArr, []);
                 }
 
                 console.log("牛", lave);
-                return new TypeReturn(HandsType["TYPE_NIU_" + lave], cardsArr[0], cardPre, cardSuf);
+                return new PokerUtils.TypeReturn(HandsType["TYPE_NIU_" + lave], cardsArr[0], cardPre, cardSuf);
             }
         }
     }
 
     console.log("没牛.");
-    return new TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
+    return new PokerUtils.TypeReturn(HandsType.TYPE_NONE, cardsArr[0], cardsArr, []);
 };
 
 /**
@@ -206,9 +208,9 @@ PokerUtils.getHandsType = function(cardsArr) {
  * @return {Boolean} true 表示 cards1 大于 cards2
  */
 PokerUtils.compareCards = function(cards1, cards2) {
-    var typeReturn1 = getHandsType(cards1);
-    var typeReturn2 = getHandsType(cards2);
-    return compareHandsReturn(typeReturn1, typeReturn2);
+    var typeReturn1 = PokerUtils.getHandsType(cards1);
+    var typeReturn2 = PokerUtils.getHandsType(cards2);
+    return PokerUtils.compareHandsReturn(typeReturn1, typeReturn2);
 };
 
 /**

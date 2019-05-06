@@ -21,17 +21,19 @@ cc.Class({
     // onLoad () {},
 
     start () {
-        Global.audioMgr.playMusic(Global.audioMgr.roomMusic);
+        // Global.audioMgr.playMusic(Global.audioMgr.roomMusic);
     },
 
     onBtnOffline(){
         cc.log("单机模式.");
         this.scrollView.active = true;
         this.menu.active = false;
+        Global.config.ONLINE_MODE = false;
     },
 
     onBtnRoom(){
         Global.loadScene("Menu");
+        Global.config.ONLINE_MODE = true;
     }
 
     // update (dt) {},

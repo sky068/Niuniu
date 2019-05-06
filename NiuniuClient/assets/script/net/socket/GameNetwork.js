@@ -218,10 +218,10 @@ let GameNetwork = cc.Class({
      */
     _sendSocketRequest: function (req) {
         cc.assert(this._socket);
+        let msg = JSON.stringify(req);
 
         if (this.isSocketOpened()){
             //通过json的方法生成请求字符串
-            let msg = JSON.stringify(req);
             cc.log("WebSocketDelegate::send->" + msg);
             this._socket.send(msg);
         } else{
