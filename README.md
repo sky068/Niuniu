@@ -10,5 +10,5 @@ danji分支为单机模式.
 
 net 分支为联网开房玩法.
 
-[在线试玩](http://www.gamelover.net/games/niuniu)
+[在线试玩](http://skyxu123.gitee.io/gamelover/games/niuniu/)
 
